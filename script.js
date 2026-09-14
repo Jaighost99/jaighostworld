@@ -98,14 +98,14 @@ if(galleryImages.length){
   galleryModal.addEventListener('keydown',e=>{if(e.key==='Escape')closeGallery();if(e.key==='ArrowLeft')moveGallery(-1);if(e.key==='ArrowRight')moveGallery(1)});
 }
 
-/* About section artwork: stitch sharp source into one canvas so there are no visible tile seams. */
+/* About section artwork: rebuild the sharp source and clean every horizontal join. */
 const aboutHost=document.querySelector('.about-portrait');
 const aboutArt=aboutHost?.querySelector('img');
 if(aboutHost&&aboutArt){
   aboutHost.classList.add('about-art-host');
   aboutArt.classList.add('about-logo-art');
   aboutArt.alt='Jai Loyal / Ghost skull artwork';
-  aboutArt.src='assets/about-ghost-art.jpg?v=20260914-9';
+  aboutArt.src='assets/about-ghost-art.jpg?v=20260914-10';
   aboutArt.style.visibility='visible';
   aboutArt.style.opacity='1';
 
@@ -115,7 +115,7 @@ if(aboutHost&&aboutArt){
   canvas.setAttribute('aria-label','Jai Loyal / Ghost skull artwork');
   aboutHost.appendChild(canvas);
 
-  const tileUrls=Array.from({length:12},(_,i)=>`assets/about-tile-${String(i+1).padStart(2,'0')}.b64.txt?v=20260914-9`);
+  const tileUrls=Array.from({length:12},(_,i)=>`assets/about-tile-${String(i+1).padStart(2,'0')}.b64.txt?v=20260914-10`);
 
   const fetchTile=async(url,attempts=3)=>{
     let lastError;
@@ -149,16 +149,47 @@ if(aboutHost&&aboutArt){
       const height=heights.reduce((sum,h)=>sum+h,0);
       canvas.width=width;
       canvas.height=height;
-      const ctx=canvas.getContext('2d',{alpha:false});
+      const ctx=canvas.getContext('2d',{alpha:false,willReadFrequently:true});
       ctx.imageSmoothingEnabled=true;
       ctx.imageSmoothingQuality='high';
       ctx.fillStyle='#050505';
       ctx.fillRect(0,0,width,height);
+
+      const crop=3;
+      const seams=[];
       let y=0;
       images.forEach((img,index)=>{
-        ctx.drawImage(img,0,y,width,heights[index]);
-        y+=heights[index];
+        const top=index===0?0:crop;
+        const bottom=index===images.length-1?0:crop;
+        const sourceHeight=Math.max(1,img.naturalHeight-top-bottom);
+        const destHeight=heights[index];
+        ctx.drawImage(img,0,top,img.naturalWidth,sourceHeight,0,y,width,destHeight);
+        y+=destHeight;
+        if(index<images.length-1)seams.push(y);
       });
+
+      /* Feather the few pixels around each original tile boundary so no compression line survives. */
+      const frame=ctx.getImageData(0,0,width,height);
+      const px=frame.data;
+      const band=3;
+      seams.forEach(seam=>{
+        const topRow=Math.max(0,seam-band-1);
+        const bottomRow=Math.min(height-1,seam+band);
+        for(let row=Math.max(0,seam-band);row<=Math.min(height-1,seam+band-1);row++){
+          const t=(row-(seam-band))/(Math.max(1,(band*2)-1));
+          for(let x=0;x<width;x++){
+            const dst=(row*width+x)*4;
+            const a=(topRow*width+x)*4;
+            const b=(bottomRow*width+x)*4;
+            px[dst]=Math.round(px[a]*(1-t)+px[b]*t);
+            px[dst+1]=Math.round(px[a+1]*(1-t)+px[b+1]*t);
+            px[dst+2]=Math.round(px[a+2]*(1-t)+px[b+2]*t);
+            px[dst+3]=255;
+          }
+        }
+      });
+      ctx.putImageData(frame,0,0);
+
       requestAnimationFrame(()=>{
         canvas.classList.add('ready');
         aboutArt.style.opacity='0';
