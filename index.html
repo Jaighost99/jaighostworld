@@ -7,9 +7,19 @@
   <meta name="description" content="Jai Ghost World — music, film, visuals and storytelling by Jai Loyal / Jai Ghost.">
   <meta property="og:title" content="Jai Ghost World">
   <meta property="og:description" content="Music. Film. Visuals. Storytelling.">
-  <meta property="og:image" content="https://jaighostworld.com/assets/hero-jai-ghost.png">
+  <meta property="og:image" content="https://jaighostworld.com/assets/jai-ghost-world-share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Jai Ghost World cinematic website preview">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://jaighostworld.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jai Ghost World">
+  <meta name="twitter:description" content="Music. Film. Visuals. Storytelling.">
+  <meta name="twitter:image" content="https://jaighostworld.com/assets/jai-ghost-world-share.jpg">
+  <link rel="canonical" href="https://jaighostworld.com/">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <title>Jai Ghost World — Official Site</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +30,12 @@
     .contact-socials a{color:#c5c7c4;white-space:nowrap}
     .contact-socials a:hover,.contact-socials a:focus-visible{color:var(--red)}
     .release-card .cover img.official-cover{filter:none!important;transform:none!important;object-position:center!important;object-fit:cover!important}
+    .artist-stream-row{display:flex;justify-content:flex-end;padding:18px 0 0}
+    .spotify-button{display:inline-flex;align-items:center;gap:11px;min-height:44px;padding:11px 17px;border:1px solid #1ed760;background:#07100a;color:#f4f4ef;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
+    .spotify-button:hover,.spotify-button:focus-visible{background:#1ed760;color:#020302;outline:none;transform:translateY(-2px)}
+    .spotify-dot{width:10px;height:10px;border-radius:50%;background:#1ed760;box-shadow:0 0 14px #1ed76088}.spotify-button:hover .spotify-dot,.spotify-button:focus-visible .spotify-dot{background:#020302;box-shadow:none}
+    @media(max-width:700px){.artist-stream-row{justify-content:stretch}.spotify-button{width:100%;justify-content:center}}
+    @supports(content-visibility:auto){.releases,.visuals,.about,.bts,.contact{content-visibility:auto;contain-intrinsic-size:700px}}
   </style>
 </head>
 <body>
@@ -35,7 +51,7 @@
 
   <main id="main">
     <section class="hero">
-      <img class="hero-art" src="assets/hero-jai-ghost.png" alt="Jai Ghost standing before a giant masked portrait in a cinematic smoke-filled world">
+      <img class="hero-art" src="assets/hero-jai-ghost.png" alt="Jai Ghost standing before a giant masked portrait in a cinematic smoke-filled world" fetchpriority="high" decoding="async">
       <div class="hero-vignette" aria-hidden="true"></div>
       <div class="hero-copy">
         <h1 class="brush">JAI GHOST<br>WORLD</h1>
@@ -55,15 +71,15 @@
       </div>
       <div class="release-grid has-five">
         <a class="release-card pain" href="https://open.spotify.com/track/2xGcJvZ2r7tfbiNhYbzMlf?si=1f18cf20ed8b45e4" target="_blank" rel="noopener noreferrer" aria-label="Listen to Hell of Pain on Spotify">
-          <div class="cover"><img class="official-cover" src="assets/hell-of-pain.webp?v=20260914-2" alt="Hell of Pain official cover art"></div>
+          <div class="cover"><img class="official-cover" src="assets/hell-of-pain.webp?v=20260914-2" alt="Hell of Pain official cover art" loading="lazy" decoding="async"></div>
           <div class="release-meta"><span><b>HELL OF PAIN</b><small>Listen on Spotify</small></span><i aria-hidden="true">▶</i></div>
         </a>
         <a class="release-card eyes" href="https://open.spotify.com/track/1z708QcdhWh9Xv6w0SJK4P?si=22b5a183889a48f8" target="_blank" rel="noopener noreferrer" aria-label="Listen to I Seen Through the Devil's Eyes on Spotify">
-          <div class="cover"><img class="official-cover" src="assets/devils-eyes.webp?v=20260914-2" alt="I Seen Through the Devil's Eyes official cover art"></div>
+          <div class="cover"><img class="official-cover" src="assets/devils-eyes.webp?v=20260914-2" alt="I Seen Through the Devil's Eyes official cover art" loading="lazy" decoding="async"></div>
           <div class="release-meta"><span><b>I SEEN THROUGH<br>THE DEVIL'S EYES</b><small>Listen on Spotify</small></span><i aria-hidden="true">▶</i></div>
         </a>
         <a class="release-card panic" href="https://open.spotify.com/track/5Jt4Vc5hFzMMMkN3vNSnEM?si=de4d7a005ddf47fb" target="_blank" rel="noopener noreferrer" aria-label="Listen to I Seen the Devil Panic on Spotify">
-          <div class="cover"><img class="official-cover" src="assets/devil-panic.webp?v=20260914-2" alt="I Seen the Devil Panic official cover art"></div>
+          <div class="cover"><img class="official-cover" src="assets/devil-panic.webp?v=20260914-2" alt="I Seen the Devil Panic official cover art" loading="lazy" decoding="async"></div>
           <div class="release-meta"><span><b>I SEEN THE DEVIL PANIC</b><small>Listen on Spotify</small></span><i aria-hidden="true">▶</i></div>
         </a>
         <article class="release-card pulse">
@@ -71,17 +87,18 @@
           <div class="release-meta"><span><b>NO PULSE</b><small>COMING SOON</small></span><span class="coming-soon">COMING SOON</span></div>
         </article>
         <a class="release-card whispers" href="https://open.spotify.com/album/59vtOMNEuDAQlo7jNUPt45?si=Cq5o_jHmSbmRwOYfxWci3Q" target="_blank" rel="noopener noreferrer" aria-label="Listen to Whispers Don't Sleep on Spotify">
-          <div class="cover"><img class="official-cover" src="assets/whispers-dont-sleep.webp" alt="Whispers Don't Sleep official cover art"></div>
+          <div class="cover"><img class="official-cover" src="assets/whispers-dont-sleep.webp" alt="Whispers Don't Sleep official cover art" loading="lazy" decoding="async"></div>
           <div class="release-meta"><span><b>WHISPERS DON'T SLEEP</b><small>Listen on Spotify</small></span><i aria-hidden="true">▶</i></div>
         </a>
       </div>
+      <div class="artist-stream-row"><a class="spotify-button" href="https://open.spotify.com/artist/7JYQHRk7T8PvDFIFvsKyZj" target="_blank" rel="noopener noreferrer" aria-label="View Jai Loyal on Spotify"><span class="spotify-dot" aria-hidden="true"></span>VIEW JAI LOYAL ON SPOTIFY →</a></div>
     </section>
 
     <section class="panel visuals" id="visuals">
       <div class="panel-head"><h2>FILM &amp; VISUALS</h2><span>VISUAL STORIES. A DARKER PERSPECTIVE.</span></div>
       <div class="visual-grid">
         <a class="watch-world" href="https://youtu.be/OOTt7VrOcS8?is=TVDxP1Z9_sOQseCH" target="_blank" rel="noopener noreferrer" aria-label="Watch I Seen Through the Devil's Eyes music video on YouTube">
-          <img src="assets/hero-world.png" alt="I Seen Through the Devil's Eyes music video">
+          <img src="assets/hero-world.png" alt="I Seen Through the Devil's Eyes music video" loading="lazy" decoding="async">
           <figcaption><b>▶</b><span><strong>I SEEN THROUGH THE DEVIL'S EYES</strong><small>MUSIC VIDEO — WATCH ON YOUTUBE<br>SHORT FILMS — COMING SOON &nbsp;|&nbsp; DOCUMENTARIES — COMING SOON</small></span></figcaption>
         </a>
         <div class="visual-copy">
@@ -91,14 +108,14 @@
           <a class="outline-button small" href="https://youtube.com/@jailoyal?si=Z-2M_NoXxeqx1zyN" target="_blank" rel="noopener noreferrer">VIEW ALL MUSIC VIDEOS →</a>
         </div>
         <figure class="visual-side">
-          <img src="assets/hero-jai-ghost.png" alt="Jai Ghost visual still">
+          <img src="assets/hero-jai-ghost.png" alt="Jai Ghost visual still" loading="lazy" decoding="async">
           <figcaption>CREATE<br>EXPLORE<br>QUESTION<br>FEEL</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="panel about" id="about">
-      <div class="about-portrait"><img src="assets/jai-ghost-portrait.jpeg" alt="Jai Ghost wearing the signature mask"></div>
+      <div class="about-portrait"><img src="assets/jai-ghost-portrait.jpeg" alt="Jai Ghost wearing the signature mask" loading="lazy" decoding="async"></div>
       <div class="about-copy">
         <span class="red-label">ABOUT</span>
         <h2>JAI LOYAL / JAI GHOST</h2>
@@ -113,11 +130,11 @@
     <section class="panel bts" id="bts">
       <div class="panel-head"><h2>BEHIND THE SCENES</h2><span>THE PROCESS. THE PEOPLE. THE REAL.</span></div>
       <div class="bts-strip">
-        <figure><img src="assets/bts-blossom-backstage.jpg" alt="Jai Ghost and crew backstage at Blossom Music Center"></figure>
-        <figure><img src="assets/bts-blossom-stage.jpg" alt="Jai Ghost performing live onstage at Blossom Music Center"></figure>
-        <figure class="red-room"><img src="assets/hero-jai-ghost.png" alt="Studio session"></figure>
-        <figure><img src="assets/hero-jai-ghost.png" alt="Jai Ghost production still"></figure>
-        <figure><img src="assets/jai-ghost-portrait.jpeg" alt="Jai Ghost behind the scenes"></figure>
+        <figure><img src="assets/bts-blossom-backstage.jpg" alt="Jai Ghost and crew backstage at Blossom Music Center" loading="lazy" decoding="async"></figure>
+        <figure><img src="assets/bts-blossom-stage.jpg" alt="Jai Ghost performing live onstage at Blossom Music Center" loading="lazy" decoding="async"></figure>
+        <figure class="red-room"><img src="assets/hero-jai-ghost.png" alt="Studio session" loading="lazy" decoding="async"></figure>
+        <figure><img src="assets/hero-jai-ghost.png" alt="Jai Ghost production still" loading="lazy" decoding="async"></figure>
+        <figure><img src="assets/jai-ghost-portrait.jpeg" alt="Jai Ghost behind the scenes" loading="lazy" decoding="async"></figure>
         <div class="gallery-box">MORE VISUALS <b>→</b></div>
       </div>
     </section>
@@ -134,7 +151,7 @@
         <a class="contact-item" href="https://youtube.com/@jailoyal?si=Z-2M_NoXxeqx1zyN" target="_blank" rel="noopener noreferrer"><b>▶</b><span><strong>YOUTUBE</strong><small>@jailoyal</small></span></a>
         <a class="message-button" href="mailto:Management@jaighostworld.com">SEND A MESSAGE →</a>
       </div>
-      <img class="contact-person" src="assets/hero-jai-ghost.png" alt="">
+      <img class="contact-person" src="assets/hero-jai-ghost.png" alt="" loading="lazy" decoding="async">
     </section>
   </main>
 
@@ -144,6 +161,6 @@
     <p>© <span id="year">2026</span> JAI GHOST WORLD. ALL RIGHTS RESERVED.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
