@@ -24,7 +24,3 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 document.querySelector('#year').textContent = new Date().getFullYear();
 
-document.querySelector('.play').addEventListener('click', () => {
-  document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
-});
-
