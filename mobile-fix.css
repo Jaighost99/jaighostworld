@@ -1,0 +1,12 @@
+@media (max-width: 550px) {
+  .hero h1 {
+    font-size: clamp(3.5rem, 18vw, 5rem);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .contact h2 {
+    font-size: clamp(3.5rem, 16vw, 5rem);
+  }
+}
+
