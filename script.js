@@ -35,10 +35,6 @@ body.jgw-modal-open{overflow:hidden}
 .jgw-gallery-caption{position:absolute;left:24px;right:24px;bottom:18px;text-align:center;color:#c8cac7;font-size:.52rem;letter-spacing:.12em}
 .jgw-gallery-nav{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:46px;height:58px;border:1px solid #4a4d4d;background:#050606d9;color:#fff;font-size:1.45rem;cursor:pointer}
 .jgw-gallery-prev{left:16px}.jgw-gallery-next{right:16px}
-.about-portrait.about-art-host{position:relative;background:#050505;display:grid;place-items:center;overflow:hidden}
-.about-portrait img.about-logo-art{object-fit:contain!important;object-position:center!important;filter:none!important;background:#050505;padding:clamp(8px,1vw,16px);transition:opacity .18s ease}
-.about-art-canvas{position:absolute;inset:0;margin:auto;height:100%;width:auto;max-width:100%;aspect-ratio:3/4;display:block;background:#050505;opacity:0;transition:opacity .18s ease;pointer-events:none}
-.about-art-canvas.ready{opacity:1}
 @media(max-width:700px){
   .jgw-modal{padding:8px}.jgw-video-content{padding:22px 14px 16px}.jgw-video-content h2{margin-right:42px;font-size:1.7rem}.jgw-close{right:8px;top:8px;width:38px;height:38px}.jgw-gallery-stage{min-height:72vh;padding:54px 12px 70px}.jgw-gallery-nav{top:auto;bottom:12px;transform:none;width:44px;height:44px}.jgw-gallery-prev{left:12px}.jgw-gallery-next{right:12px}.jgw-gallery-caption{left:62px;right:62px;bottom:25px;font-size:.43rem}.jgw-modal-actions{align-items:flex-start;flex-direction:column}
 }
@@ -69,7 +65,6 @@ if(watchWorld){
   videoModal.querySelector('[data-close-video]').addEventListener('click',stopAndClose);
   videoModal.addEventListener('keydown',e=>{if(e.key==='Escape')stopAndClose()});
 }
-
 /* Behind-the-scenes lightbox */
 const galleryImages=[...document.querySelectorAll('.bts-strip figure img')];
 if(galleryImages.length){
@@ -96,109 +91,4 @@ if(galleryImages.length){
   galleryClose.addEventListener('click',closeGallery);
   galleryModal.querySelector('[data-close-gallery]').addEventListener('click',closeGallery);
   galleryModal.addEventListener('keydown',e=>{if(e.key==='Escape')closeGallery();if(e.key==='ArrowLeft')moveGallery(-1);if(e.key==='ArrowRight')moveGallery(1)});
-}
-
-/* About section artwork: rebuild the sharp source and clean every horizontal join. */
-const aboutHost=document.querySelector('.about-portrait');
-const aboutArt=aboutHost?.querySelector('img');
-if(aboutHost&&aboutArt){
-  aboutHost.classList.add('about-art-host');
-  aboutArt.classList.add('about-logo-art');
-  aboutArt.alt='Jai Loyal / Ghost skull artwork';
-  aboutArt.src='assets/about-ghost-art.jpg?v=20260914-10';
-  aboutArt.style.visibility='visible';
-  aboutArt.style.opacity='1';
-
-  const canvas=document.createElement('canvas');
-  canvas.className='about-art-canvas';
-  canvas.setAttribute('role','img');
-  canvas.setAttribute('aria-label','Jai Loyal / Ghost skull artwork');
-  aboutHost.appendChild(canvas);
-
-  const tileUrls=Array.from({length:12},(_,i)=>`assets/about-tile-${String(i+1).padStart(2,'0')}.b64.txt?v=20260914-10`);
-
-  const fetchTile=async(url,attempts=3)=>{
-    let lastError;
-    for(let attempt=0;attempt<attempts;attempt++){
-      try{
-        const response=await fetch(url,{cache:'no-store'});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const b64=(await response.text()).trim();
-        if(!b64)throw new Error('Empty tile');
-        return b64;
-      }catch(error){
-        lastError=error;
-        if(attempt<attempts-1)await new Promise(resolve=>setTimeout(resolve,180*(attempt+1)));
-      }
-    }
-    throw lastError;
-  };
-
-  const loadTileImage=(b64,index)=>new Promise((resolve,reject)=>{
-    const img=new Image();
-    img.onload=()=>resolve(img);
-    img.onerror=()=>reject(new Error(`About artwork tile ${index+1} could not decode`));
-    img.src=`data:image/webp;base64,${b64}`;
-  });
-
-  Promise.all(tileUrls.map(url=>fetchTile(url)))
-    .then(chunks=>Promise.all(chunks.map((b64,index)=>loadTileImage(b64,index))))
-    .then(images=>{
-      const width=Math.max(...images.map(img=>img.naturalWidth));
-      const heights=images.map(img=>img.naturalHeight);
-      const height=heights.reduce((sum,h)=>sum+h,0);
-      canvas.width=width;
-      canvas.height=height;
-      const ctx=canvas.getContext('2d',{alpha:false,willReadFrequently:true});
-      ctx.imageSmoothingEnabled=true;
-      ctx.imageSmoothingQuality='high';
-      ctx.fillStyle='#050505';
-      ctx.fillRect(0,0,width,height);
-
-      const crop=3;
-      const seams=[];
-      let y=0;
-      images.forEach((img,index)=>{
-        const top=index===0?0:crop;
-        const bottom=index===images.length-1?0:crop;
-        const sourceHeight=Math.max(1,img.naturalHeight-top-bottom);
-        const destHeight=heights[index];
-        ctx.drawImage(img,0,top,img.naturalWidth,sourceHeight,0,y,width,destHeight);
-        y+=destHeight;
-        if(index<images.length-1)seams.push(y);
-      });
-
-      /* Feather the few pixels around each original tile boundary so no compression line survives. */
-      const frame=ctx.getImageData(0,0,width,height);
-      const px=frame.data;
-      const band=3;
-      seams.forEach(seam=>{
-        const topRow=Math.max(0,seam-band-1);
-        const bottomRow=Math.min(height-1,seam+band);
-        for(let row=Math.max(0,seam-band);row<=Math.min(height-1,seam+band-1);row++){
-          const t=(row-(seam-band))/(Math.max(1,(band*2)-1));
-          for(let x=0;x<width;x++){
-            const dst=(row*width+x)*4;
-            const a=(topRow*width+x)*4;
-            const b=(bottomRow*width+x)*4;
-            px[dst]=Math.round(px[a]*(1-t)+px[b]*t);
-            px[dst+1]=Math.round(px[a+1]*(1-t)+px[b+1]*t);
-            px[dst+2]=Math.round(px[a+2]*(1-t)+px[b+2]*t);
-            px[dst+3]=255;
-          }
-        }
-      });
-      ctx.putImageData(frame,0,0);
-
-      requestAnimationFrame(()=>{
-        canvas.classList.add('ready');
-        aboutArt.style.opacity='0';
-      });
-    })
-    .catch(error=>{
-      console.warn('About artwork sharp version did not finish loading; keeping fallback visible.',error);
-      canvas.remove();
-      aboutArt.style.visibility='visible';
-      aboutArt.style.opacity='1';
-    });
 }
