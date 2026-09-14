@@ -36,8 +36,8 @@ body.jgw-modal-open{overflow:hidden}
 .jgw-gallery-nav{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:46px;height:58px;border:1px solid #4a4d4d;background:#050606d9;color:#fff;font-size:1.45rem;cursor:pointer}
 .jgw-gallery-prev{left:16px}.jgw-gallery-next{right:16px}
 .about-portrait.about-art-host{position:relative;background:#050505;display:grid;place-items:center;overflow:hidden}
-.about-portrait img.about-logo-art{object-fit:contain!important;object-position:center!important;filter:none!important;background:#050505;padding:clamp(8px,1vw,16px)}
-.about-art-canvas{position:absolute;inset:0;margin:auto;height:100%;width:auto;max-width:100%;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:center;background:#050505;opacity:0;transition:opacity .18s ease}
+.about-portrait img.about-logo-art{object-fit:contain!important;object-position:center!important;filter:none!important;background:#050505;padding:clamp(8px,1vw,16px);transition:opacity .18s ease}
+.about-art-canvas{position:absolute;inset:0;margin:auto;height:100%;width:auto;max-width:100%;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:center;background:#050505;opacity:0;transition:opacity .18s ease;pointer-events:none}
 .about-art-canvas.ready{opacity:1}
 .about-art-canvas img{display:block!important;flex:0 0 auto;width:100%!important;height:auto!important;max-width:none!important;object-fit:fill!important;object-position:center!important;filter:none!important;margin:0!important;padding:0!important;border:0!important}
 @media(max-width:700px){
@@ -99,40 +99,64 @@ if(galleryImages.length){
   galleryModal.addEventListener('keydown',e=>{if(e.key==='Escape')closeGallery();if(e.key==='ArrowLeft')moveGallery(-1);if(e.key==='ArrowRight')moveGallery(1)});
 }
 
-/* About section artwork: sharp 600x800 reconstruction, loaded as 12 cached-safe WebP strips. */
+/* About section artwork: keep fallback visible until every sharp tile has actually loaded. */
 const aboutHost=document.querySelector('.about-portrait');
 const aboutArt=aboutHost?.querySelector('img');
 if(aboutHost&&aboutArt){
   aboutHost.classList.add('about-art-host');
   aboutArt.classList.add('about-logo-art');
   aboutArt.alt='Jai Loyal / Ghost skull artwork';
-  aboutArt.src='assets/about-ghost-art.jpg?v=20260914-7';
+  aboutArt.src='assets/about-ghost-art.jpg?v=20260914-8';
+  aboutArt.style.visibility='visible';
+  aboutArt.style.opacity='1';
 
-  const canvas=document.createElement('div');
-  canvas.className='about-art-canvas';
-  canvas.setAttribute('role','img');
-  canvas.setAttribute('aria-label','Jai Loyal / Ghost skull artwork');
-  aboutHost.appendChild(canvas);
+  const tileLayer=document.createElement('div');
+  tileLayer.className='about-art-canvas';
+  tileLayer.setAttribute('role','img');
+  tileLayer.setAttribute('aria-label','Jai Loyal / Ghost skull artwork');
+  aboutHost.appendChild(tileLayer);
 
-  const tileUrls=Array.from({length:12},(_,i)=>`assets/about-tile-${String(i+1).padStart(2,'0')}.b64.txt?v=20260914-7`);
-  Promise.all(tileUrls.map(async url=>{
-    const response=await fetch(url,{cache:'no-store'});
-    if(!response.ok)throw new Error(`About artwork tile failed: ${url}`);
-    return (await response.text()).trim();
-  })).then(async chunks=>{
-    const images=chunks.map((b64,index)=>{
-      const img=new Image();
-      img.alt='';
-      img.decoding='async';
-      img.dataset.tile=String(index+1);
-      img.src=`data:image/webp;base64,${b64}`;
-      canvas.appendChild(img);
-      return img;
-    });
-    await Promise.all(images.map(img=>img.decode?img.decode().catch(()=>{}):Promise.resolve()));
-    canvas.classList.add('ready');
-    aboutArt.style.visibility='hidden';
-  }).catch(()=>{
-    canvas.remove();
+  const tileUrls=Array.from({length:12},(_,i)=>`assets/about-tile-${String(i+1).padStart(2,'0')}.b64.txt?v=20260914-8`);
+
+  const fetchTile=async(url,attempts=3)=>{
+    let lastError;
+    for(let attempt=0;attempt<attempts;attempt++){
+      try{
+        const response=await fetch(url,{cache:'no-store'});
+        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        const b64=(await response.text()).trim();
+        if(!b64)throw new Error('Empty tile');
+        return b64;
+      }catch(error){
+        lastError=error;
+        if(attempt<attempts-1)await new Promise(resolve=>setTimeout(resolve,180*(attempt+1)));
+      }
+    }
+    throw lastError;
+  };
+
+  const loadTileImage=(b64,index)=>new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.alt='';
+    img.dataset.tile=String(index+1);
+    img.onload=()=>resolve(img);
+    img.onerror=()=>reject(new Error(`About artwork tile ${index+1} could not decode`));
+    img.src=`data:image/webp;base64,${b64}`;
   });
+
+  Promise.all(tileUrls.map(url=>fetchTile(url)))
+    .then(chunks=>Promise.all(chunks.map((b64,index)=>loadTileImage(b64,index))))
+    .then(images=>{
+      images.forEach(img=>tileLayer.appendChild(img));
+      requestAnimationFrame(()=>{
+        tileLayer.classList.add('ready');
+        aboutArt.style.opacity='0';
+      });
+    })
+    .catch(error=>{
+      console.warn('About artwork sharp version did not finish loading; keeping fallback visible.',error);
+      tileLayer.remove();
+      aboutArt.style.visibility='visible';
+      aboutArt.style.opacity='1';
+    });
 }
