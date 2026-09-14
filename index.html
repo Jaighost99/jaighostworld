@@ -15,6 +15,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .release-grid.has-five{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .whispers .cover img{object-position:center 30%;filter:grayscale(.88) contrast(1.35) brightness(.48)}
+    .whispers .cover:before{content:"";position:absolute;z-index:2;inset:0;background:repeating-linear-gradient(0deg,transparent 0 11px,rgba(255,255,255,.025) 12px),radial-gradient(circle at 50% 35%,rgba(199,25,32,.2),transparent 42%)}
+    .whispers .cover strong{font-family:'Permanent Marker',cursive;color:#e7e6e1;font-size:clamp(1.2rem,2.15vw,2.35rem);line-height:.9;transform:rotate(-4deg)}
+    .whispers .cover strong em{display:block;color:var(--red);font-style:normal}
+    @media(max-width:1100px){.release-grid.has-five{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:760px){.release-grid.has-five{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:520px){.release-grid.has-five{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,7 +61,7 @@
         <h2>FEATURED RELEASES</h2>
         <span>REAL STORIES. LOUDER THAN FEAR.</span>
       </div>
-      <div class="release-grid">
+      <div class="release-grid has-five">
         <article class="release-card pain">
           <div class="cover"><img src="assets/hero-jai-ghost.png" alt=""><div class="cover-shade"></div><strong class="brush">HELL<br>OF PAIN</strong></div>
           <div class="release-meta"><span><b>HELL OF PAIN</b><small>Single</small></span><i>▶</i></div>
@@ -67,6 +77,10 @@
         <article class="release-card pulse">
           <div class="cover pulse-cover"><div class="heart">♥</div><div class="pulse-line"></div><div class="cover-shade"></div><strong class="brush">NO PULSE</strong></div>
           <div class="release-meta"><span><b>NO PULSE</b><small>Visual Film</small></span><i>▶</i></div>
+        </article>
+        <article class="release-card whispers">
+          <div class="cover"><img src="assets/hero-world.png" alt=""><div class="cover-shade"></div><strong>WHISPERS<br><em>DON'T SLEEP</em></strong></div>
+          <div class="release-meta"><span><b>WHISPERS DON'T SLEEP</b><small>Single</small></span><i>▶</i></div>
         </article>
       </div>
     </section>
