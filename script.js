@@ -3,6 +3,27 @@ if(button&&nav){
   button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));nav.classList.toggle('open',!open)});
   nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');button.setAttribute('aria-expanded','false')}));
 }
+
+// Broadcast control: set the section's data-status to "live" and data-live-src
+// to an embeddable stream URL. Offline art remains the automatic fallback.
+const liveChannel=document.querySelector('.live-channel');
+if(liveChannel){
+  const status=liveChannel.dataset.status==='live'?'live':'offline';
+  const statusLabel=liveChannel.querySelector('.live-status span');
+  const stage=liveChannel.querySelector('#live-stage');
+  const liveSrc=liveChannel.dataset.liveSrc?.trim();
+  if(statusLabel)statusLabel.textContent=status==='live'?'LIVE NOW':'OFFLINE';
+  if(status==='live'&&liveSrc&&stage){
+    const embed=document.createElement('iframe');
+    embed.className='live-embed';
+    embed.src=liveSrc;
+    embed.title='Jai Ghost World live broadcast';
+    embed.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+    embed.allowFullscreen=true;
+    stage.append(embed);
+    liveChannel.classList.add('has-live-embed');
+  }
+}
 const year=document.querySelector('#year');if(year)year.textContent=new Date().getFullYear();
 
 /* Jai Ghost World cinematic interactions */
