@@ -51,7 +51,7 @@ if (instrumental && instrumentalToggle) {
 }
 
 /* Music Video Vault — browse and watch without leaving Jai Ghost World */
-const videoVaultLauncher = document.querySelector('.visual-copy .outline-button[href*="youtube"]');
+const videoVaultLauncher = document.querySelector('[data-video-vault], .visual-copy .outline-button[href*="youtube"]');
 const featuredVideoLauncher = document.querySelector('.watch-world');
 
 if (videoVaultLauncher && featuredVideoLauncher) {
