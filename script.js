@@ -56,6 +56,12 @@ body.jgw-modal-open{overflow:hidden}
 .jgw-youtube-link{display:inline-flex;align-items:center;min-height:44px;padding:11px 18px;border:1px solid var(--red,#bd171e);font-size:.56rem;letter-spacing:.15em}
 .jgw-youtube-link:hover,.jgw-youtube-link:focus-visible{background:var(--red,#bd171e)}
 .jgw-modal-note{color:#8e9190;font-size:.47rem;letter-spacing:.12em}
+.jgw-spotify-shell{width:min(760px,96vw)}
+.jgw-spotify-content{padding:clamp(28px,4vw,52px)}
+.jgw-spotify-content h2{margin:0 56px 20px 0;font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.8rem);font-weight:400;letter-spacing:.09em;line-height:.96}
+.jgw-spotify-frame{width:100%;height:352px;border:0;border-radius:12px;background:#101010;display:block}
+.jgw-spotify-note{display:flex;align-items:center;gap:10px;margin-top:16px;color:#9da09d;font-size:.47rem;line-height:1.6;letter-spacing:.12em}
+.jgw-spotify-note:before{content:"";width:8px;height:8px;border-radius:50%;background:#1ed760;box-shadow:0 0 14px #1ed76088;flex:0 0 auto}
 .bts-strip figure{cursor:zoom-in;position:relative;transition:transform .2s,border-color .2s}
 .bts-strip figure:after{content:'VIEW';position:absolute;right:8px;bottom:7px;padding:4px 6px;background:#050606cc;border:1px solid #ffffff38;color:#ddd;font-size:.38rem;letter-spacing:.13em;opacity:0;transition:opacity .2s}
 .bts-strip figure:hover,.bts-strip figure:focus-visible{transform:translateY(-3px);border-color:var(--red,#bd171e);outline:none}
@@ -67,13 +73,78 @@ body.jgw-modal-open{overflow:hidden}
 .jgw-gallery-nav{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:46px;height:58px;border:1px solid #4a4d4d;background:#050606d9;color:#fff;font-size:1.45rem;cursor:pointer}
 .jgw-gallery-prev{left:16px}.jgw-gallery-next{right:16px}
 @media(max-width:700px){
-  .jgw-modal{padding:8px}.jgw-video-content{padding:22px 14px 16px}.jgw-video-content h2{margin-right:42px;font-size:1.7rem}.jgw-close{right:8px;top:8px;width:38px;height:38px}.jgw-gallery-stage{min-height:72vh;padding:54px 12px 70px}.jgw-gallery-nav{top:auto;bottom:12px;transform:none;width:44px;height:44px}.jgw-gallery-prev{left:12px}.jgw-gallery-next{right:12px}.jgw-gallery-caption{left:62px;right:62px;bottom:25px;font-size:.43rem}.jgw-modal-actions{align-items:flex-start;flex-direction:column}
+  .jgw-modal{padding:8px}.jgw-video-content,.jgw-spotify-content{padding:22px 14px 16px}.jgw-video-content h2,.jgw-spotify-content h2{margin-right:42px;font-size:1.7rem}.jgw-close{right:8px;top:8px;width:38px;height:38px}.jgw-gallery-stage{min-height:72vh;padding:54px 12px 70px}.jgw-gallery-nav{top:auto;bottom:12px;transform:none;width:44px;height:44px}.jgw-gallery-prev{left:12px}.jgw-gallery-next{right:12px}.jgw-gallery-caption{left:62px;right:62px;bottom:25px;font-size:.43rem}.jgw-modal-actions{align-items:flex-start;flex-direction:column}.jgw-spotify-frame{border-radius:8px}.jgw-spotify-note{font-size:.42rem}
 }
 `;
 document.head.appendChild(enhancementStyles);
 
 const openModal=(modal,focusTarget)=>{modal.hidden=false;document.body.classList.add('jgw-modal-open');requestAnimationFrame(()=>focusTarget?.focus())};
 const closeModal=(modal,returnFocus)=>{modal.hidden=true;document.body.classList.remove('jgw-modal-open');returnFocus?.focus()};
+
+/* Spotify music player — keep listeners inside Jai Ghost World */
+const spotifyLaunchers=[...document.querySelectorAll('.release-card[href*="open.spotify.com"], .spotify-button[href*="open.spotify.com"]')];
+if(spotifyLaunchers.length){
+  let spotifyReturnFocus=null;
+  const spotifyModal=document.createElement('div');
+  spotifyModal.className='jgw-modal';
+  spotifyModal.id='jgw-spotify-modal';
+  spotifyModal.hidden=true;
+  spotifyModal.setAttribute('role','dialog');
+  spotifyModal.setAttribute('aria-modal','true');
+  spotifyModal.setAttribute('aria-labelledby','jgw-spotify-title');
+  spotifyModal.innerHTML=`<div class="jgw-modal-backdrop" data-close-spotify></div><div class="jgw-modal-shell jgw-spotify-shell"><button class="jgw-close" type="button" aria-label="Close music player">×</button><div class="jgw-spotify-content"><div class="jgw-kicker">JAI GHOST WORLD / MUSIC</div><h2 id="jgw-spotify-title">NOW PLAYING</h2><iframe class="jgw-spotify-frame" title="Spotify player" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><div class="jgw-spotify-note">LISTEN HERE. STAY INSIDE JAI GHOST WORLD.</div></div></div>`;
+  document.body.appendChild(spotifyModal);
+  const spotifyClose=spotifyModal.querySelector('.jgw-close');
+  const spotifyFrame=spotifyModal.querySelector('.jgw-spotify-frame');
+  const spotifyTitle=spotifyModal.querySelector('#jgw-spotify-title');
+  const instrumental=document.querySelector('#site-instrumental');
+
+  const getSpotifyData=launcher=>{
+    try{
+      const url=new URL(launcher.href);
+      const parts=url.pathname.split('/').filter(Boolean);
+      const type=parts[0];
+      const id=parts[1];
+      if(!['track','album','artist','playlist','episode','show'].includes(type)||!id)return null;
+      const cardTitle=launcher.querySelector('.release-meta b')?.textContent?.replace(/\s+/g,' ').trim();
+      const title=cardTitle||(type==='artist'?'JAI LOYAL':'NOW PLAYING');
+      return{type,id,title};
+    }catch{return null}
+  };
+
+  const closeSpotify=()=>{
+    spotifyFrame.src='';
+    closeModal(spotifyModal,spotifyReturnFocus);
+    if(instrumental&&spotifyModal.dataset.resumeInstrumental==='true'){
+      spotifyModal.dataset.resumeInstrumental='false';
+      instrumental.play().catch(()=>{});
+    }
+  };
+
+  spotifyLaunchers.forEach(launcher=>{
+    const data=getSpotifyData(launcher);
+    if(!data)return;
+    const small=launcher.querySelector('.release-meta small');
+    if(small)small.textContent='Play here';
+    if(launcher.classList.contains('release-card'))launcher.setAttribute('aria-label',`Play ${data.title} inside Jai Ghost World`);
+    if(launcher.classList.contains('spotify-button'))launcher.childNodes[launcher.childNodes.length-1].textContent=' PLAY JAI LOYAL HERE →';
+    launcher.addEventListener('click',e=>{
+      e.preventDefault();
+      spotifyReturnFocus=launcher;
+      spotifyTitle.textContent=data.title;
+      spotifyFrame.style.height=data.type==='track'?'152px':'352px';
+      spotifyFrame.title=`${data.title} Spotify player`;
+      spotifyFrame.src=`https://open.spotify.com/embed/${data.type}/${data.id}?utm_source=generator&theme=0`;
+      if(instrumental){spotifyModal.dataset.resumeInstrumental=String(!instrumental.paused);instrumental.pause()}
+      if(typeof gtag==='function')gtag('event','music_player_open',{music_title:data.title,spotify_type:data.type,spotify_id:data.id});
+      openModal(spotifyModal,spotifyClose);
+    });
+  });
+
+  spotifyClose.addEventListener('click',closeSpotify);
+  spotifyModal.querySelector('[data-close-spotify]').addEventListener('click',closeSpotify);
+  spotifyModal.addEventListener('keydown',e=>{if(e.key==='Escape')closeSpotify()});
+}
 
 /* Music-video modal */
 const watchWorld=document.querySelector('.watch-world');
