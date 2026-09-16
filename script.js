@@ -86,6 +86,30 @@ if(watchWorld){
   videoModal.querySelector('[data-close-video]').addEventListener('click',stopAndClose);
   videoModal.addEventListener('keydown',e=>{if(e.key==='Escape')stopAndClose()});
 }
+
+/* Full interview modal */
+const pressPlayButtons=[...document.querySelectorAll('[data-press-play]')];
+if(pressPlayButtons.length){
+  let pressReturnFocus=null;
+  const pressVideoUrl='https://youtu.be/0DGCSpeNy8A';
+  const pressModal=document.createElement('div');
+  pressModal.className='jgw-modal';
+  pressModal.id='jgw-press-modal';
+  pressModal.hidden=true;
+  pressModal.setAttribute('role','dialog');
+  pressModal.setAttribute('aria-modal','true');
+  pressModal.setAttribute('aria-labelledby','jgw-press-title');
+  pressModal.innerHTML=`<div class="jgw-modal-backdrop" data-close-press></div><div class="jgw-modal-shell"><button class="jgw-close" type="button" aria-label="Close interview">×</button><div class="jgw-video-content"><div class="jgw-kicker">NEWS &amp; PRESS / FULL INTERVIEW</div><h2 id="jgw-press-title">THE HELL OF PAIN DEEP DIVE</h2><div class="jgw-video-frame"><iframe title="The Hell of Pain Deep Dive full interview" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><div class="jgw-modal-actions"><span class="jgw-modal-note">JAI LOYAL &amp; JAI GHOST / THE SOLOMON PAULK SHOW</span><a class="jgw-youtube-link" href="${pressVideoUrl}" target="_blank" rel="noopener noreferrer">WATCH ON YOUTUBE ↗</a></div></div></div>`;
+  document.body.appendChild(pressModal);
+  const pressClose=pressModal.querySelector('.jgw-close');
+  const pressFrame=pressModal.querySelector('iframe');
+  const stopAndClosePress=()=>{pressFrame.src='';closeModal(pressModal,pressReturnFocus)};
+  pressPlayButtons.forEach(trigger=>trigger.addEventListener('click',()=>{pressReturnFocus=trigger;pressFrame.src='https://www.youtube-nocookie.com/embed/0DGCSpeNy8A?autoplay=1&rel=0&modestbranding=1';openModal(pressModal,pressClose)}));
+  pressClose.addEventListener('click',stopAndClosePress);
+  pressModal.querySelector('[data-close-press]').addEventListener('click',stopAndClosePress);
+  pressModal.addEventListener('keydown',e=>{if(e.key==='Escape')stopAndClosePress()});
+}
+
 /* Behind-the-scenes lightbox */
 const galleryImages=[...document.querySelectorAll('.bts-strip figure img')];
 if(galleryImages.length){
