@@ -81,7 +81,6 @@ if (videoVaultLauncher && featuredVideoLauncher) {
     .jgw-vault-coming{display:flex;min-height:100%;flex-direction:column;justify-content:flex-end;padding:22px;border:1px solid #2d3031;background:radial-gradient(circle at 50% 20%,#31080a,transparent 42%),#050606}
     .jgw-vault-coming span{color:var(--red,#bd171e);font-size:.44rem;letter-spacing:.2em}
     .jgw-vault-coming strong{margin-top:8px;font-family:'Bebas Neue',sans-serif;font-size:2rem;font-weight:400;line-height:.92;letter-spacing:.1em}
-    .jgw-vault-coming p{margin:12px 0 0;color:#8f9290;font-size:.45rem;line-height:1.6}
     @media(max-width:700px){.jgw-vault-content{padding:22px 14px 16px}.jgw-vault-content h2{font-size:2rem}.jgw-vault-grid{grid-template-columns:1fr}.jgw-vault-coming{min-height:180px}.jgw-vault-play{left:12px;bottom:12px}.jgw-vault-play strong{font-size:.48rem}}
   `;
   document.head.appendChild(vaultStyles);
@@ -109,7 +108,6 @@ if (videoVaultLauncher && featuredVideoLauncher) {
           <div class="jgw-vault-coming" aria-label="More music videos coming soon">
             <span>NEXT TRANSMISSION</span>
             <strong>MORE VISUALS<br>COMING SOON</strong>
-            <p>The vault is built. Future music videos can be added here without sending viewers away from Jai Ghost World.</p>
           </div>
         </div>
       </div>
