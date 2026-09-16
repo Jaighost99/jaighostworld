@@ -173,3 +173,47 @@
     if (event.key === 'Escape') resetRadio();
   });
 })();
+
+/* GHOST & LOYAL APPAREL — live store link */
+(() => {
+  const merch = document.querySelector('#merch');
+  if (!merch) return;
+
+  const status = merch.querySelector('.merch-coming-soon');
+  if (!status) return;
+
+  const strong = status.querySelector('strong');
+  if (strong) strong.textContent = 'AVAILABLE NOW';
+
+  const existing = status.querySelector('.jgw-merch-shop');
+  if (existing) return;
+
+  const shop = document.createElement('a');
+  shop.className = 'jgw-merch-shop';
+  shop.href = 'https://app.amazecommerce.com/shop/ghost-loyal';
+  shop.target = '_blank';
+  shop.rel = 'noopener noreferrer';
+  shop.textContent = 'SHOP THE COLLECTION →';
+  shop.setAttribute('aria-label', 'Shop Ghost and Loyal Apparel');
+  status.appendChild(shop);
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .merch-coming-soon .jgw-merch-shop{
+      display:inline-flex;align-items:center;justify-content:center;
+      margin-top:14px;min-height:44px;padding:11px 18px;
+      border:1px solid var(--red,#bd171e);background:#090a0a;color:#fff;
+      font:700 .52rem 'Space Mono',monospace;letter-spacing:.14em;
+      text-decoration:none;transition:.2s
+    }
+    .merch-coming-soon .jgw-merch-shop:hover,
+    .merch-coming-soon .jgw-merch-shop:focus-visible{
+      background:var(--red,#bd171e);outline:none;transform:translateY(-2px)
+    }
+  `;
+  document.head.appendChild(style);
+
+  shop.addEventListener('click', () => {
+    if (typeof gtag === 'function') gtag('event', 'merch_store_open', { store: 'ghost-loyal' });
+  });
+})();
