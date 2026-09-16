@@ -32,13 +32,14 @@
     .jgw-radio-picker-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:12px}
     .jgw-radio-picker-head span{color:var(--red,#bd171e);font-size:.42rem;letter-spacing:.18em}
     .jgw-radio-picker-head small{color:#747774;font-size:.38rem;letter-spacing:.12em;text-align:right}
-    .jgw-radio-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:260px;overflow:auto;padding-right:4px;scrollbar-width:thin}
+    .jgw-radio-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;overflow:visible}
     .jgw-radio-track{display:flex;align-items:center;gap:10px;min-height:43px;padding:8px 10px;border:1px solid #292c2d;background:#070808;color:#d9dbd8;text-align:left;font:700 .43rem 'Space Mono',monospace;letter-spacing:.08em;line-height:1.3;cursor:pointer;transition:.18s}
     .jgw-radio-track:before{content:'▶';display:grid;place-items:center;width:24px;height:24px;border:1px solid #454849;border-radius:50%;font-size:.34rem;flex:0 0 auto}
     .jgw-radio-track:hover,.jgw-radio-track:focus-visible,.jgw-radio-track.is-active{border-color:var(--red,#bd171e);background:#190708;color:#fff;outline:none}
     .jgw-radio-all{grid-column:1/-1;justify-content:center;color:#fff;background:#0d0f0f}
     .jgw-radio-all:before{content:'●';color:#1ed760;font-size:.5rem;border:0}
-    @media(max-width:700px){.jgw-radio-list{grid-template-columns:1fr;max-height:300px}.jgw-radio-picker-head{align-items:start;flex-direction:column}.jgw-radio-picker-head small{text-align:left}.jgw-radio-all{grid-column:auto}}
+    @media(max-width:900px){.jgw-radio-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:700px){.jgw-radio-list{grid-template-columns:1fr}.jgw-radio-picker-head{align-items:start;flex-direction:column}.jgw-radio-picker-head small{text-align:left}.jgw-radio-all{grid-column:auto}}
   `;
   document.head.appendChild(styles);
 
@@ -47,7 +48,7 @@
   picker.innerHTML = `
     <div class="jgw-radio-picker-head">
       <span>GHOST RADIO PICKS</span>
-      <small>SELECT A TRACK / STAY INSIDE THE WORLD</small>
+      <small>${ghostRadioTracks.length} TRACKS / SELECT A TRACK / STAY INSIDE THE WORLD</small>
     </div>
     <div class="jgw-radio-list">
       <button class="jgw-radio-track jgw-radio-all is-active" type="button" data-radio-all>ALL JAI LOYAL RELEASES</button>
