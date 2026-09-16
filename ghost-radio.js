@@ -98,7 +98,6 @@
     revealPlayer(artist);
     controller.loadEntity(uri, false, 0);
     if (!artist) {
-      // The track button itself is the user gesture. Start playback immediately.
       controller.play();
       setTimeout(() => controller?.play(), 180);
     }
@@ -174,7 +173,7 @@
   });
 })();
 
-/* GHOST & LOYAL APPAREL — live store link */
+/* GHOST & LOYAL APPAREL — store stays inside Jai Ghost World */
 (() => {
   const merch = document.querySelector('#merch');
   if (!merch) return;
@@ -185,17 +184,32 @@
   const strong = status.querySelector('strong');
   if (strong) strong.textContent = 'AVAILABLE NOW';
 
-  const existing = status.querySelector('.jgw-merch-shop');
-  if (existing) return;
+  let shop = status.querySelector('.jgw-merch-shop');
+  if (!shop) {
+    shop = document.createElement('button');
+    shop.type = 'button';
+    shop.className = 'jgw-merch-shop';
+    shop.textContent = 'SHOP THE COLLECTION →';
+    shop.setAttribute('aria-label', 'Shop Ghost and Loyal Apparel inside Jai Ghost World');
+    status.appendChild(shop);
+  }
 
-  const shop = document.createElement('a');
-  shop.className = 'jgw-merch-shop';
-  shop.href = 'https://app.amazecommerce.com/shop/ghost-loyal';
-  shop.target = '_blank';
-  shop.rel = 'noopener noreferrer';
-  shop.textContent = 'SHOP THE COLLECTION →';
-  shop.setAttribute('aria-label', 'Shop Ghost and Loyal Apparel');
-  status.appendChild(shop);
+  const storeModal = document.createElement('div');
+  storeModal.className = 'jgw-merch-store-modal';
+  storeModal.hidden = true;
+  storeModal.setAttribute('role', 'dialog');
+  storeModal.setAttribute('aria-modal', 'true');
+  storeModal.setAttribute('aria-label', 'Ghost and Loyal Apparel store');
+  storeModal.innerHTML = `
+    <div class="jgw-merch-store-backdrop" data-close-merch-store></div>
+    <div class="jgw-merch-store-shell">
+      <div class="jgw-merch-store-head">
+        <div><span>JAI GHOST WORLD / MERCH</span><strong>GHOST &amp; LOYAL APPAREL</strong></div>
+        <button class="jgw-merch-store-close" type="button" aria-label="Close store">×</button>
+      </div>
+      <iframe class="jgw-merch-store-frame" title="Ghost and Loyal Apparel store" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>`;
+  document.body.appendChild(storeModal);
 
   const style = document.createElement('style');
   style.textContent = `
@@ -204,16 +218,50 @@
       margin-top:14px;min-height:44px;padding:11px 18px;
       border:1px solid var(--red,#bd171e);background:#090a0a;color:#fff;
       font:700 .52rem 'Space Mono',monospace;letter-spacing:.14em;
-      text-decoration:none;transition:.2s
+      text-decoration:none;transition:.2s;cursor:pointer
     }
     .merch-coming-soon .jgw-merch-shop:hover,
     .merch-coming-soon .jgw-merch-shop:focus-visible{
       background:var(--red,#bd171e);outline:none;transform:translateY(-2px)
     }
+    body.jgw-store-open{overflow:hidden}
+    .jgw-merch-store-modal[hidden]{display:none!important}
+    .jgw-merch-store-modal{position:fixed;z-index:2200;inset:0;display:grid;place-items:center;padding:12px}
+    .jgw-merch-store-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.94);backdrop-filter:blur(8px)}
+    .jgw-merch-store-shell{position:relative;z-index:2;width:min(1320px,98vw);height:min(92vh,980px);display:flex;flex-direction:column;background:#050606;border:1px solid #343738;box-shadow:0 30px 100px #000}
+    .jgw-merch-store-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border-bottom:1px solid #2b2e2f;background:#070808}
+    .jgw-merch-store-head div{display:flex;flex-direction:column;gap:3px}
+    .jgw-merch-store-head span{color:var(--red,#bd171e);font:700 .42rem 'Space Mono',monospace;letter-spacing:.16em}
+    .jgw-merch-store-head strong{color:#fff;font:400 1.2rem 'Bebas Neue',sans-serif;letter-spacing:.08em}
+    .jgw-merch-store-close{width:42px;height:42px;border:1px solid #454849;background:#050606;color:#fff;font-size:1.65rem;cursor:pointer}
+    .jgw-merch-store-close:hover,.jgw-merch-store-close:focus-visible{background:#741016;border-color:var(--red,#bd171e);outline:none}
+    .jgw-merch-store-frame{flex:1;width:100%;border:0;background:#fff}
+    @media(max-width:700px){.jgw-merch-store-modal{padding:0}.jgw-merch-store-shell{width:100vw;height:100vh;border:0}.jgw-merch-store-head{padding:9px 10px}.jgw-merch-store-head strong{font-size:1rem}}
   `;
   document.head.appendChild(style);
 
-  shop.addEventListener('click', () => {
-    if (typeof gtag === 'function') gtag('event', 'merch_store_open', { store: 'ghost-loyal' });
-  });
+  const frame = storeModal.querySelector('.jgw-merch-store-frame');
+  const close = storeModal.querySelector('.jgw-merch-store-close');
+  const backdrop = storeModal.querySelector('[data-close-merch-store]');
+  const storeUrl = 'https://app.amazecommerce.com/shop/ghost-loyal';
+
+  const openStore = () => {
+    frame.src = storeUrl;
+    storeModal.hidden = false;
+    document.body.classList.add('jgw-store-open');
+    requestAnimationFrame(() => close.focus());
+    if (typeof gtag === 'function') gtag('event', 'merch_store_open', { store: 'ghost-loyal', experience: 'inside_site' });
+  };
+
+  const closeStore = () => {
+    storeModal.hidden = true;
+    frame.src = '';
+    document.body.classList.remove('jgw-store-open');
+    shop.focus();
+  };
+
+  shop.addEventListener('click', openStore);
+  close.addEventListener('click', closeStore);
+  backdrop.addEventListener('click', closeStore);
+  storeModal.addEventListener('keydown', event => { if (event.key === 'Escape') closeStore(); });
 })();
