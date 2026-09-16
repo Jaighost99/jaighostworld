@@ -39,7 +39,7 @@
     .instrumental-toggle:hover,.instrumental-toggle:focus-visible,.instrumental-toggle.is-playing{border-color:var(--red);background:#741016;outline:none}
     @media(max-width:820px){.site-header{grid-template-columns:1fr auto auto;gap:7px}.instrumental-toggle{min-height:36px;padding:8px 9px;font-size:.42rem;letter-spacing:.08em}}
     @media(max-width:700px){.artist-stream-row{justify-content:stretch}.spotify-button{width:100%;justify-content:center}}
-    @supports(content-visibility:auto){.releases,.visuals,.live-channel,.about,.merch,.bts,.contact{content-visibility:auto;contain-intrinsic-size:700px}}
+    @supports(content-visibility:auto){.releases,.visuals,.live-channel,.about,.press,.merch,.bts,.contact{content-visibility:auto;contain-intrinsic-size:700px}}
   </style>
 </head>
 <body>
@@ -49,7 +49,7 @@
   <header class="site-header" id="top">
     <a class="brand brush" href="#top">JAI GHOST WORLD</a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation"><i></i><i></i></button>
-    <nav id="site-nav"><a href="#music">Music</a><a href="#visuals">Visuals</a><a href="#live">Live</a><a href="#about">About</a><a href="#merch">Merch</a><a href="#contact">Contact</a></nav>
+    <nav id="site-nav"><a href="#music">Music</a><a href="#visuals">Visuals</a><a href="#live">Live</a><a href="#about">About</a><a href="#press">Press</a><a href="#merch">Merch</a><a href="#contact">Contact</a></nav>
     <button class="instrumental-toggle" type="button" aria-label="Play Break Them instrumental" aria-pressed="false">▶ INSTRUMENTAL</button>
     <audio id="site-instrumental" preload="metadata" loop><source src="assets/break-them-instrumental.mp3" type="audio/mpeg"></audio>
     <a class="header-cta" href="#music">Enter the World</a>
@@ -161,6 +161,24 @@
         <a class="outline-button small" href="#contact">CONNECT →</a>
       </div>
       <blockquote class="brush">“SAME<br>HUMAN<br>DIFFERENT<br>VIEW”<cite>— JAI GHOST</cite></blockquote>
+    </section>
+
+    <section class="panel press" id="press">
+      <div class="panel-head"><h2>NEWS &amp; PRESS</h2><span>INTERVIEWS. FEATURES. THE STORY.</span></div>
+      <article class="press-feature">
+        <a class="press-visual" href="https://www.facebook.com/reel/1043467995480830/" target="_blank" rel="noopener noreferrer" aria-label="Watch the full Hell of Pain interview on Facebook">
+          <img src="assets/solomon-paulk-table-1.jpg?v=20260914-3" alt="Jai Loyal during The Solomon Paulk Show interview" loading="lazy" decoding="async">
+          <span class="press-play" aria-hidden="true">▶</span>
+          <small>FACEBOOK REEL</small>
+        </a>
+        <div class="press-copy">
+          <span class="red-label">FEATURED INTERVIEW</span>
+          <h3>HELL OF PAIN<br>FULL INTERVIEW</h3>
+          <span class="red-rule"></span>
+          <p>Watch Jai Loyal's full conversation on The Solomon Paulk Show.</p>
+          <a class="outline-button small" href="https://www.facebook.com/reel/1043467995480830/" target="_blank" rel="noopener noreferrer">WATCH FULL INTERVIEW ↗</a>
+        </div>
+      </article>
     </section>
 
     <section class="panel merch" id="merch">
