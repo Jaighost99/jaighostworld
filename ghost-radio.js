@@ -28,7 +28,7 @@
 
   const styles = document.createElement('style');
   styles.textContent = `
-    .jgw-radio-picker{margin-top:18px;padding-top:18px;border-top:1px solid #272a2a}
+    .jgw-radio-picker{margin-top:4px;padding-top:14px;border-top:1px solid #272a2a}
     .jgw-radio-picker-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:12px}
     .jgw-radio-picker-head span{color:var(--red,#bd171e);font-size:.42rem;letter-spacing:.18em}
     .jgw-radio-picker-head small{color:#747774;font-size:.38rem;letter-spacing:.12em;text-align:right}
@@ -38,6 +38,8 @@
     .jgw-radio-track:hover,.jgw-radio-track:focus-visible,.jgw-radio-track.is-active{border-color:var(--red,#bd171e);background:#190708;color:#fff;outline:none}
     .jgw-radio-all{grid-column:1/-1;justify-content:center;color:#fff;background:#0d0f0f}
     .jgw-radio-all:before{content:'●';color:#1ed760;font-size:.5rem;border:0}
+    .jgw-radio-frame[hidden]{display:none!important}
+    .jgw-radio-frame:not([hidden]){margin-bottom:16px}
     @media(max-width:900px){.jgw-radio-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:700px){.jgw-radio-list{grid-template-columns:1fr}.jgw-radio-picker-head{align-items:start;flex-direction:column}.jgw-radio-picker-head small{text-align:left}.jgw-radio-all{grid-column:auto}}
   `;
@@ -48,10 +50,10 @@
   picker.innerHTML = `
     <div class="jgw-radio-picker-head">
       <span>GHOST RADIO PICKS</span>
-      <small>${ghostRadioTracks.length} TRACKS / SELECT A TRACK / STAY INSIDE THE WORLD</small>
+      <small>${ghostRadioTracks.length} CURATED TRACKS / PICK A SONG</small>
     </div>
     <div class="jgw-radio-list">
-      <button class="jgw-radio-track jgw-radio-all is-active" type="button" data-radio-all>ALL JAI LOYAL RELEASES</button>
+      <button class="jgw-radio-track jgw-radio-all" type="button" data-radio-all>ALL JAI LOYAL RELEASES</button>
       ${ghostRadioTracks.map(track => `<button class="jgw-radio-track" type="button" data-radio-track="${track.id}" data-radio-title="${track.title.replace(/"/g, '&quot;')}">${track.title}</button>`).join('')}
     </div>`;
 
@@ -66,11 +68,17 @@
     picker.querySelectorAll('.jgw-radio-track').forEach(button => button.classList.toggle('is-active', button === activeButton));
   };
 
+  const revealPlayer = () => {
+    radioFrame.hidden = false;
+    requestAnimationFrame(() => radioFrame.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
+  };
+
   const showArtist = () => {
     radioFrame.src = artistEmbed;
-    radioFrame.style.height = window.innerWidth <= 700 ? '430px' : '480px';
+    radioFrame.style.height = window.innerWidth <= 700 ? '430px' : '352px';
     radioFrame.title = 'Ghost Radio — Jai Loyal on Spotify';
     setActive(allButton);
+    revealPlayer();
   };
 
   allButton.addEventListener('click', showArtist);
@@ -84,14 +92,20 @@
       radioFrame.style.height = '152px';
       radioFrame.title = `${title} — Ghost Radio`;
       setActive(button);
+      revealPlayer();
       if (typeof gtag === 'function') gtag('event', 'ghost_radio_track_play', { music_title: title, spotify_id: id });
     });
   });
 
+  radioFrame.hidden = true;
+  radioFrame.src = '';
+  setActive(null);
+
   radioLink.addEventListener('click', () => {
     requestAnimationFrame(() => {
-      setActive(allButton);
-      radioFrame.style.height = window.innerWidth <= 700 ? '430px' : '480px';
+      radioFrame.hidden = true;
+      radioFrame.src = '';
+      setActive(null);
     });
   });
 })();
