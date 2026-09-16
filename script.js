@@ -1,3 +1,13 @@
+// Google Analytics 4 — Jai Ghost World
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments)}
+gtag('js',new Date());
+gtag('config','G-ZK5H5NNYMW');
+const gaScript=document.createElement('script');
+gaScript.async=true;
+gaScript.src='https://www.googletagmanager.com/gtag/js?id=G-ZK5H5NNYMW';
+document.head.appendChild(gaScript);
+
 const button=document.querySelector('.menu-toggle'),nav=document.querySelector('#site-nav');
 if(button&&nav){
   button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')==='true';button.setAttribute('aria-expanded',String(!open));nav.classList.toggle('open',!open)});
