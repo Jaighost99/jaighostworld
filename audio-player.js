@@ -231,3 +231,90 @@ if (videoVaultLauncher) {
     }
   });
 }
+
+/* GHOST RADIO — Jai Loyal Spotify artist catalog inside Jai Ghost World */
+const siteNav = document.querySelector('#site-nav');
+const contactNavLink = siteNav?.querySelector('a[href="#contact"]');
+
+if (siteNav && contactNavLink) {
+  const radioStyles = document.createElement('style');
+  radioStyles.textContent = `
+    .site-header nav{gap:clamp(12px,1.55vw,26px)}
+    .ghost-radio-nav{display:inline-flex;align-items:center;gap:7px;color:#f0f0ec!important;white-space:nowrap}
+    .ghost-radio-nav:before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red,#bd171e);box-shadow:0 0 12px #bd171e99;flex:0 0 auto}
+    .ghost-radio-nav:hover,.ghost-radio-nav:focus-visible{color:#fff!important;outline:none}
+    .jgw-radio-shell{width:min(760px,96vw)}
+    .jgw-radio-content{padding:clamp(28px,4vw,52px)}
+    .jgw-radio-content h2{margin:0 56px 7px 0;font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.8rem);font-weight:400;letter-spacing:.1em;line-height:.9}
+    .jgw-radio-tagline{margin:0 0 22px;color:#9a9d9a;font-size:.5rem;letter-spacing:.16em;line-height:1.6}
+    .jgw-radio-frame{display:block;width:100%;height:480px;border:0;border-radius:12px;background:#101010}
+    .jgw-radio-foot{display:flex;align-items:center;gap:10px;margin-top:16px;color:#8f928f;font-size:.45rem;letter-spacing:.13em;line-height:1.55}
+    .jgw-radio-foot:before{content:'';width:8px;height:8px;border-radius:50%;background:#1ed760;box-shadow:0 0 14px #1ed76088;flex:0 0 auto}
+    @media(max-width:700px){.jgw-radio-content{padding:22px 14px 16px}.jgw-radio-content h2{font-size:2.3rem}.jgw-radio-frame{height:430px;border-radius:8px}.jgw-radio-tagline,.jgw-radio-foot{font-size:.4rem}}
+  `;
+  document.head.appendChild(radioStyles);
+
+  const radioLink = document.createElement('a');
+  radioLink.className = 'ghost-radio-nav';
+  radioLink.href = '#ghost-radio';
+  radioLink.textContent = 'GHOST RADIO';
+  radioLink.setAttribute('aria-haspopup', 'dialog');
+  radioLink.setAttribute('aria-controls', 'jgw-ghost-radio');
+  contactNavLink.insertAdjacentElement('afterend', radioLink);
+
+  const radioModal = document.createElement('div');
+  radioModal.className = 'jgw-modal';
+  radioModal.id = 'jgw-ghost-radio';
+  radioModal.hidden = true;
+  radioModal.setAttribute('role', 'dialog');
+  radioModal.setAttribute('aria-modal', 'true');
+  radioModal.setAttribute('aria-labelledby', 'jgw-radio-title');
+  radioModal.innerHTML = `
+    <div class="jgw-modal-backdrop" data-close-radio></div>
+    <div class="jgw-modal-shell jgw-radio-shell">
+      <button class="jgw-close" type="button" aria-label="Close Ghost Radio">×</button>
+      <div class="jgw-radio-content">
+        <div class="jgw-kicker">JAI GHOST WORLD / GHOST RADIO</div>
+        <h2 id="jgw-radio-title">GHOST RADIO</h2>
+        <p class="jgw-radio-tagline">THE SOUND OF JAI GHOST WORLD.</p>
+        <iframe class="jgw-radio-frame" title="Ghost Radio — Jai Loyal on Spotify" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div class="jgw-radio-foot">POWERED BY JAI LOYAL'S SPOTIFY ARTIST PROFILE.</div>
+      </div>
+    </div>`;
+  document.body.appendChild(radioModal);
+
+  const radioClose = radioModal.querySelector('.jgw-close');
+  const radioFrame = radioModal.querySelector('.jgw-radio-frame');
+  const artistEmbed = 'https://open.spotify.com/embed/artist/7JYQHRk7T8PvDFIFvsKyZj?utm_source=generator&theme=0';
+
+  const openRadio = event => {
+    event?.preventDefault();
+    radioFrame.src = artistEmbed;
+    if (instrumental) {
+      radioModal.dataset.resumeInstrumental = String(!instrumental.paused);
+      instrumental.pause();
+    }
+    radioModal.hidden = false;
+    document.body.classList.add('jgw-modal-open');
+    if (typeof gtag === 'function') gtag('event', 'ghost_radio_open', { spotify_artist_id: '7JYQHRk7T8PvDFIFvsKyZj' });
+    requestAnimationFrame(() => radioClose.focus());
+  };
+
+  const closeRadio = () => {
+    radioFrame.src = '';
+    radioModal.hidden = true;
+    document.body.classList.remove('jgw-modal-open');
+    if (instrumental && radioModal.dataset.resumeInstrumental === 'true') {
+      radioModal.dataset.resumeInstrumental = 'false';
+      instrumental.play().catch(() => {});
+    }
+    radioLink.focus();
+  };
+
+  radioLink.addEventListener('click', openRadio);
+  radioClose.addEventListener('click', closeRadio);
+  radioModal.querySelector('[data-close-radio]').addEventListener('click', closeRadio);
+  radioModal.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeRadio();
+  });
+}
