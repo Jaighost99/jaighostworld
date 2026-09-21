@@ -437,67 +437,96 @@ if(galleryImages.length){
   const loyal = document.getElementById('loyal');
   const overlay = document.getElementById('loyal-transition-screen');
   const triggers = [...document.querySelectorAll('[data-loyal-enter]')];
+  const exits = [...document.querySelectorAll('[data-loyal-exit]')];
   const buddyInterest = [...document.querySelectorAll('[data-buddy-interest]')];
 
   if (!loyal) return;
 
   const revealLoyalArt = () => loyal.classList.add('is-revealed');
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          revealLoyalArt();
-          observer.disconnect();
-        }
-      });
-    }, {threshold:.18});
-    observer.observe(loyal);
-  } else {
-    revealLoyalArt();
-  }
-
   const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let transitionRunning = false;
 
-  const enterLoyal = (event) => {
-    if (event) event.preventDefault();
-    if (transitionRunning) return;
+  const setOverlayCopy = (returning = false) => {
+    if (!overlay) return;
+    const top = overlay.querySelector('.loyal-transition-message span');
+    const title = overlay.querySelector('.loyal-transition-message strong');
+    const bottom = overlay.querySelector('.loyal-transition-message small');
+    if (top) top.textContent = returning ? 'LOYAL' : 'JAI GHOST WORLD';
+    if (title) title.textContent = returning ? 'RETURN TO THE DARK SIDE.' : 'WELCOME TO THE LIGHT SIDE.';
+    if (bottom) bottom.textContent = returning ? 'GHOST' : 'LOYAL';
+  };
 
-    if (!overlay || reducedMotion) {
-      loyal.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'start'});
-      revealLoyalArt();
-      history.replaceState(null, '', '#loyal');
+  const setLoyalMode = (enabled) => {
+    document.body.classList.toggle('loyal-mode', enabled);
+    if (enabled) revealLoyalArt();
+    window.scrollTo({top:0, left:0, behavior:'auto'});
+  };
+
+  const cleanOverlay = () => {
+    if (!overlay) return;
+    overlay.hidden = true;
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.classList.remove('is-playing','is-exiting','is-returning');
+    document.body.style.overflow = '';
+    transitionRunning = false;
+  };
+
+  const enterLoyal = (event, instant = false) => {
+    if (event) event.preventDefault();
+    if (transitionRunning || document.body.classList.contains('loyal-mode')) return;
+
+    if (!overlay || reducedMotion || instant) {
+      setLoyalMode(true);
+      history.replaceState(null, '', window.location.pathname + window.location.search + '#loyal');
       return;
     }
 
     transitionRunning = true;
+    setOverlayCopy(false);
     overlay.hidden = false;
     overlay.setAttribute('aria-hidden', 'false');
-    overlay.classList.remove('is-exiting');
+    overlay.classList.remove('is-exiting','is-returning');
     overlay.classList.add('is-playing');
     document.body.style.overflow = 'hidden';
 
     window.setTimeout(() => {
-      loyal.scrollIntoView({behavior:'auto', block:'start'});
-      revealLoyalArt();
-      history.replaceState(null, '', '#loyal');
+      setLoyalMode(true);
+      history.replaceState(null, '', window.location.pathname + window.location.search + '#loyal');
     }, 900);
 
-    window.setTimeout(() => {
-      overlay.classList.add('is-exiting');
-    }, 1350);
+    window.setTimeout(() => overlay.classList.add('is-exiting'), 1350);
+    window.setTimeout(cleanOverlay, 1925);
+  };
+
+  const exitLoyal = (event) => {
+    if (event) event.preventDefault();
+    if (transitionRunning || !document.body.classList.contains('loyal-mode')) return;
+
+    if (!overlay || reducedMotion) {
+      setLoyalMode(false);
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+      return;
+    }
+
+    transitionRunning = true;
+    setOverlayCopy(true);
+    overlay.hidden = false;
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.remove('is-exiting');
+    overlay.classList.add('is-playing','is-returning');
+    document.body.style.overflow = 'hidden';
 
     window.setTimeout(() => {
-      overlay.hidden = true;
-      overlay.setAttribute('aria-hidden', 'true');
-      overlay.classList.remove('is-playing','is-exiting');
-      document.body.style.overflow = '';
-      transitionRunning = false;
-    }, 1925);
+      setLoyalMode(false);
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }, 900);
+
+    window.setTimeout(() => overlay.classList.add('is-exiting'), 1350);
+    window.setTimeout(cleanOverlay, 1925);
   };
 
   triggers.forEach((trigger) => trigger.addEventListener('click', enterLoyal));
+  exits.forEach((trigger) => trigger.addEventListener('click', exitLoyal));
 
   buddyInterest.forEach((trigger) => {
     trigger.addEventListener('click', () => {
@@ -510,6 +539,6 @@ if(galleryImages.length){
   });
 
   if (window.location.hash === '#loyal') {
-    window.requestAnimationFrame(revealLoyalArt);
+    setLoyalMode(true);
   }
 })();
