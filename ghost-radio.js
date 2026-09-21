@@ -243,7 +243,7 @@
   const frame = storeModal.querySelector('.jgw-merch-store-frame');
   const close = storeModal.querySelector('.jgw-merch-store-close');
   const backdrop = storeModal.querySelector('[data-close-merch-store]');
-  const storeUrl = 'https://app.amazecommerce.com/shop/ghost-loyal';
+  const storeUrl = 'https://app.amazecommerce.com/shop/ghost-wear';
 
   const openStore = () => {
     frame.src = storeUrl;
