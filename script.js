@@ -430,3 +430,86 @@ if(galleryImages.length){
     reveal({scroll:true});
   });
 })();
+
+
+/* LOYAL LIGHT-SIDE TRANSITION */
+(() => {
+  const loyal = document.getElementById('loyal');
+  const overlay = document.getElementById('loyal-transition-screen');
+  const triggers = [...document.querySelectorAll('[data-loyal-enter]')];
+  const buddyInterest = [...document.querySelectorAll('[data-buddy-interest]')];
+
+  if (!loyal) return;
+
+  const revealLoyalArt = () => loyal.classList.add('is-revealed');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          revealLoyalArt();
+          observer.disconnect();
+        }
+      });
+    }, {threshold:.18});
+    observer.observe(loyal);
+  } else {
+    revealLoyalArt();
+  }
+
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let transitionRunning = false;
+
+  const enterLoyal = (event) => {
+    if (event) event.preventDefault();
+    if (transitionRunning) return;
+
+    if (!overlay || reducedMotion) {
+      loyal.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'start'});
+      revealLoyalArt();
+      history.replaceState(null, '', '#loyal');
+      return;
+    }
+
+    transitionRunning = true;
+    overlay.hidden = false;
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.remove('is-exiting');
+    overlay.classList.add('is-playing');
+    document.body.style.overflow = 'hidden';
+
+    window.setTimeout(() => {
+      loyal.scrollIntoView({behavior:'auto', block:'start'});
+      revealLoyalArt();
+      history.replaceState(null, '', '#loyal');
+    }, 900);
+
+    window.setTimeout(() => {
+      overlay.classList.add('is-exiting');
+    }, 1350);
+
+    window.setTimeout(() => {
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.classList.remove('is-playing','is-exiting');
+      document.body.style.overflow = '';
+      transitionRunning = false;
+    }, 1925);
+  };
+
+  triggers.forEach((trigger) => trigger.addEventListener('click', enterLoyal));
+
+  buddyInterest.forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      try {
+        window.localStorage.setItem('jgw-loyal-interest', 'buddys-adventures');
+      } catch (e) {
+        // The page still works if local storage is unavailable.
+      }
+    });
+  });
+
+  if (window.location.hash === '#loyal') {
+    window.requestAnimationFrame(revealLoyalArt);
+  }
+})();
