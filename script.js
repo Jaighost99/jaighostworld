@@ -218,3 +218,64 @@ if(galleryImages.length){
   galleryModal.querySelector('[data-close-gallery]').addEventListener('click',closeGallery);
   galleryModal.addEventListener('keydown',e=>{if(e.key==='Escape')closeGallery();if(e.key==='ArrowLeft')moveGallery(-1);if(e.key==='ArrowRight')moveGallery(1)});
 }
+
+
+/* THE WRATH preference selector */
+(() => {
+  const choices = [...document.querySelectorAll('[data-wrath-choice]')];
+  if (!choices.length) return;
+
+  const status = document.querySelector('.wrath-vote-status');
+  const storageKey = 'jgw-wrath-choice';
+
+  const getLabel = (choice) => {
+    const match = choices.find((el) => el.dataset.wrathChoice === choice);
+    return match ? (match.dataset.choiceLabel || match.textContent.trim()) : choice;
+  };
+
+  const applyChoice = (choice, announce = false) => {
+    choices.forEach((el) => {
+      const selected = el.dataset.wrathChoice === choice;
+      el.classList.toggle('is-selected', selected);
+      if (el.classList.contains('wrath-vote')) {
+        el.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      }
+    });
+
+    if (status && choice) {
+      const label = getLabel(choice);
+      status.textContent = announce
+        ? `LOCKED IN ON THIS DEVICE: ${label}. JOIN THE LIST BELOW FOR LAUNCH UPDATES.`
+        : `YOUR PICK ON THIS DEVICE: ${label}. JOIN THE LIST BELOW FOR LAUNCH UPDATES.`;
+    }
+  };
+
+  let saved = '';
+  try {
+    saved = window.localStorage.getItem(storageKey) || '';
+  } catch (error) {
+    saved = '';
+  }
+
+  if (saved && choices.some((el) => el.dataset.wrathChoice === saved)) {
+    applyChoice(saved, false);
+  }
+
+  choices.forEach((el) => {
+    if (el.classList.contains('wrath-vote')) {
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-pressed', el.dataset.wrathChoice === saved ? 'true' : 'false');
+    }
+
+    el.addEventListener('click', () => {
+      const choice = el.dataset.wrathChoice || '';
+      if (!choice) return;
+      try {
+        window.localStorage.setItem(storageKey, choice);
+      } catch (error) {
+        // The preference still works for this visit if storage is unavailable.
+      }
+      applyChoice(choice, true);
+    });
+  });
+})();
