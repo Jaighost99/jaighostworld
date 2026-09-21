@@ -279,3 +279,154 @@ if(galleryImages.length){
     });
   });
 })();
+
+
+/* THE WRATH 21+ AGE GATE */
+(() => {
+  const section = document.querySelector('.wrath-age-gated');
+  const lock = document.getElementById('wrath-age-lock');
+  const content = document.getElementById('wrath-adult-content');
+  const modal = document.getElementById('wrath-age-modal');
+  const form = document.getElementById('wrath-age-form');
+  const dob = document.getElementById('wrath-dob');
+  const error = document.getElementById('wrath-age-error');
+  const openButtons = [...document.querySelectorAll('[data-wrath-age-open]')];
+  const closeButtons = [...document.querySelectorAll('[data-wrath-age-close]')];
+
+  if (!section || !lock || !content || !modal || !form || !dob) return;
+
+  const STORAGE_KEY = 'jgw-wrath-21plus';
+  const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+  let returnFocus = null;
+
+  const todayLocalISO = () => {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  const is21OrOlder = (value) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const [year, month, day] = value.split('-').map(Number);
+    const birth = new Date(year, month - 1, day);
+
+    if (
+      birth.getFullYear() !== year ||
+      birth.getMonth() !== month - 1 ||
+      birth.getDate() !== day
+    ) return false;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const cutoff = new Date(today.getFullYear() - 21, today.getMonth(), today.getDate());
+    return birth <= cutoff;
+  };
+
+  const hasValidVerification = () => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || 'null');
+      return Boolean(
+        stored &&
+        stored.verified === true &&
+        typeof stored.expiresAt === 'number' &&
+        Date.now() < stored.expiresAt
+      );
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const reveal = ({scroll = false} = {}) => {
+    lock.hidden = true;
+    content.hidden = false;
+    content.setAttribute('aria-hidden', 'false');
+    section.setAttribute('aria-labelledby', 'wrath-title');
+    section.classList.add('is-age-verified');
+
+    if (scroll) {
+      window.requestAnimationFrame(() => {
+        section.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    }
+  };
+
+  const conceal = () => {
+    lock.hidden = false;
+    content.hidden = true;
+    content.setAttribute('aria-hidden', 'true');
+    section.setAttribute('aria-labelledby', 'wrath-gate-title');
+    section.classList.remove('is-age-verified');
+  };
+
+  const openModal = (trigger) => {
+    returnFocus = trigger || document.activeElement;
+    error.textContent = '';
+    dob.value = '';
+    modal.hidden = false;
+    document.body.classList.add('wrath-age-open');
+    window.requestAnimationFrame(() => dob.focus());
+  };
+
+  const closeModal = () => {
+    modal.hidden = true;
+    document.body.classList.remove('wrath-age-open');
+    error.textContent = '';
+    if (returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
+  };
+
+  dob.max = todayLocalISO();
+  dob.min = '1900-01-01';
+
+  if (hasValidVerification()) {
+    reveal();
+  } else {
+    conceal();
+  }
+
+  openButtons.forEach((button) => {
+    button.addEventListener('click', () => openModal(button));
+  });
+
+  closeButtons.forEach((button) => {
+    button.addEventListener('click', closeModal);
+  });
+
+  modal.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeModal();
+  });
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = dob.value;
+
+    if (!value) {
+      error.textContent = 'ENTER YOUR DATE OF BIRTH TO CONTINUE.';
+      dob.focus();
+      return;
+    }
+
+    if (!is21OrOlder(value)) {
+      error.textContent = 'ACCESS IS LIMITED TO VISITORS AGE 21 OR OLDER.';
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          verified: true,
+          expiresAt: Date.now() + THIRTY_DAYS
+        })
+      );
+    } catch (e) {
+      // Verification still applies for this visit if storage is unavailable.
+    }
+
+    modal.hidden = true;
+    document.body.classList.remove('wrath-age-open');
+    reveal({scroll:true});
+  });
+})();
