@@ -343,3 +343,242 @@ footer{min-height:62px;display:grid;grid-template-columns:1fr 1fr 1fr;align-item
   .wrath-vote-buttons{display:grid;grid-template-columns:1fr}
   .wrath-vote{width:100%}
 }
+
+
+/* THE WRATH AGE GATE */
+.wrath-age-lock[hidden],
+.wrath-adult-content[hidden],
+.wrath-age-modal[hidden]{display:none!important}
+
+.wrath-age-gated{
+  min-height:520px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.wrath-age-lock{
+  position:relative;
+  min-height:520px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  max-width:880px;
+  padding:clamp(68px,8vw,120px) 0;
+}
+.wrath-age-lock::after{
+  content:"21+";
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(8rem,19vw,18rem);
+  line-height:.75;
+  color:rgba(255,255,255,.035);
+  pointer-events:none;
+}
+.wrath-age-lock h2{
+  position:relative;
+  z-index:1;
+  margin:4px 0 0;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5.3rem,10vw,10rem);
+  font-weight:400;
+  line-height:.78;
+  letter-spacing:.015em;
+}
+.wrath-age-lock h2 em{color:var(--red);font-style:normal}
+.wrath-lock-kicker{
+  position:relative;
+  z-index:1;
+  margin:22px 0 12px;
+  color:#fff;
+  font-family:'Space Mono',monospace;
+  font-size:clamp(.72rem,1vw,.92rem);
+  font-weight:700;
+  letter-spacing:.28em;
+}
+.wrath-lock-copy{
+  position:relative;
+  z-index:1;
+  max-width:610px;
+  margin:0 0 28px;
+  color:#a9aca9;
+  font-size:clamp(.63rem,.78vw,.78rem);
+  line-height:1.8;
+  letter-spacing:.05em;
+}
+.wrath-age-lock .solid-button{
+  position:relative;
+  z-index:1;
+  cursor:pointer;
+  font-family:'Space Mono',monospace;
+}
+.wrath-age-lock>small{
+  position:relative;
+  z-index:1;
+  display:block;
+  margin-top:17px;
+  color:#696c6a;
+  font-size:.43rem;
+  line-height:1.6;
+  letter-spacing:.13em;
+}
+.wrath-adult-content{width:100%}
+
+body.wrath-age-open{overflow:hidden}
+.wrath-age-modal{
+  position:fixed;
+  z-index:200;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:18px;
+}
+.wrath-age-backdrop{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  background:rgba(0,0,0,.86);
+  backdrop-filter:blur(12px);
+  cursor:pointer;
+}
+.wrath-age-dialog{
+  position:relative;
+  z-index:2;
+  width:min(100%,620px);
+  padding:clamp(30px,5vw,54px);
+  border:1px solid #5b1519;
+  background:
+    radial-gradient(circle at 90% 0,rgba(189,23,30,.18),transparent 36%),
+    linear-gradient(145deg,#101111,#050606 75%);
+  box-shadow:0 35px 100px #000;
+}
+.wrath-age-dialog::before{
+  content:"21+";
+  position:absolute;
+  right:22px;
+  top:16px;
+  color:rgba(255,255,255,.045);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;
+  line-height:1;
+  pointer-events:none;
+}
+.wrath-age-dialog h2{
+  position:relative;
+  margin:7px 0 15px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.3rem,7vw,5.6rem);
+  font-weight:400;
+  line-height:.86;
+  letter-spacing:.05em;
+}
+.wrath-age-dialog>p:not(.eyebrow):not(.wrath-age-error){
+  max-width:470px;
+  margin:0;
+  color:#a9aca9;
+  font-size:.65rem;
+  line-height:1.75;
+}
+.wrath-age-form{
+  display:grid;
+  gap:11px;
+  margin-top:28px;
+}
+.wrath-age-form label{
+  color:#d7d8d4;
+  font-size:.5rem;
+  font-weight:700;
+  letter-spacing:.17em;
+}
+.wrath-age-form input[type="date"]{
+  width:100%;
+  min-height:58px;
+  padding:14px 16px;
+  border:1px solid #565958;
+  border-radius:0;
+  background:#080909;
+  color:#f3f3ef;
+  color-scheme:dark;
+  font:700 .75rem 'Space Mono',monospace;
+  outline:none;
+}
+.wrath-age-form input[type="date"]:focus{
+  border-color:var(--red);
+  box-shadow:0 0 0 1px var(--red);
+}
+.wrath-age-form .solid-button{
+  justify-content:center;
+  width:100%;
+  margin-top:2px;
+  cursor:pointer;
+  font-family:'Space Mono',monospace;
+}
+.wrath-age-error{
+  min-height:1.5em;
+  margin:0;
+  color:#ff7176;
+  font-size:.52rem;
+  line-height:1.5;
+  letter-spacing:.06em;
+}
+.wrath-age-exit{
+  display:block;
+  margin:16px auto 0;
+  padding:8px 5px;
+  border:0;
+  border-bottom:1px solid #606362;
+  background:transparent;
+  color:#9da09e;
+  font:700 .48rem 'Space Mono',monospace;
+  letter-spacing:.14em;
+  cursor:pointer;
+}
+.wrath-age-exit:hover,.wrath-age-exit:focus-visible{
+  color:#fff;
+  border-color:var(--red);
+  outline:none;
+}
+.wrath-age-x{
+  position:absolute;
+  z-index:3;
+  top:14px;
+  right:15px;
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid #3e4140;
+  background:#080909cc;
+  color:#fff;
+  font-size:1.35rem;
+  line-height:1;
+  cursor:pointer;
+}
+.wrath-age-x:hover,.wrath-age-x:focus-visible{
+  border-color:var(--red);
+  outline:none;
+}
+.wrath-age-dialog>small{
+  display:block;
+  margin-top:20px;
+  color:#666967;
+  font-size:.43rem;
+  line-height:1.65;
+  letter-spacing:.04em;
+}
+@media(max-width:600px){
+  .wrath-age-lock{min-height:500px;padding:64px 0}
+  .wrath-age-lock::after{right:-8px;top:26%;transform:none;font-size:9rem}
+  .wrath-age-lock h2{font-size:clamp(4.6rem,23vw,6.8rem)}
+  .wrath-age-lock .solid-button{width:100%;justify-content:center}
+  .wrath-age-dialog{padding:32px 20px 27px}
+  .wrath-age-dialog h2{font-size:3.75rem}
+  .wrath-age-x{top:10px;right:10px}
+}
