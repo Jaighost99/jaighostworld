@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260921-wrath2">
+  <link rel="stylesheet" href="styles.css?v=20260921-loyal1">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
     {"@type":"WebSite","@id":"https://jaighostworld.com/#website","url":"https://jaighostworld.com/","name":"Jai Ghost World","description":"The official world of Jai Loyal / Jai Ghost — music, film, visual storytelling and GHOST-WEAR.","inLanguage":"en-US"},
@@ -59,11 +59,20 @@
   <header class="site-header" id="top">
     <a class="brand brush" href="#top">JAI GHOST WORLD</a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation"><i></i><i></i></button>
-    <nav id="site-nav"><a href="#latest">Latest</a><a href="#visuals">Visuals</a><a href="#merch">Ghost-Wear</a><a href="#wrath">The Wrath</a><a href="#world">The World</a><a href="#contact">Join</a></nav>
+    <nav id="site-nav"><a href="#latest">Latest</a><a href="#visuals">Visuals</a><a href="#merch">Ghost-Wear</a><a href="#wrath">The Wrath</a><a href="#loyal" data-loyal-enter>LOYAL</a><a href="#world">The World</a><a href="#contact">Join</a></nav>
     <button class="instrumental-toggle" type="button" aria-label="Play Break Them instrumental" aria-pressed="false">▶ INSTRUMENTAL</button>
     <audio id="site-instrumental" preload="metadata" loop><source src="assets/break-them-instrumental.mp3" type="audio/mpeg"></audio>
     <a class="header-cta" href="#music">Enter the World</a>
   </header>
+
+  <div class="loyal-transition-screen" id="loyal-transition-screen" hidden aria-hidden="true">
+    <div class="loyal-transition-wash" aria-hidden="true"></div>
+    <div class="loyal-transition-message">
+      <span>JAI GHOST WORLD</span>
+      <strong>WELCOME TO THE LIGHT SIDE.</strong>
+      <small>LOYAL</small>
+    </div>
+  </div>
 
   <main id="main">
     <section class="hero">
@@ -336,6 +345,108 @@
       </div>
     </div>
 
+
+    <section class="panel loyal" id="loyal" aria-labelledby="loyal-title">
+      <div class="loyal-light-ray" aria-hidden="true"></div>
+
+      <div class="loyal-transition-copy">
+        <p class="loyal-eyebrow">THE LIGHT SIDE OF JAI GHOST WORLD</p>
+        <h2 id="loyal-title">WELCOME TO THE <em>LIGHT SIDE.</em></h2>
+        <p>Stories. Family. Heart. Imagination. A brighter side of the world built to grow with Buddy, Krystle, and everything LOYAL becomes next.</p>
+      </div>
+
+      <div class="loyal-hero">
+        <div class="loyal-copy">
+          <span class="loyal-coming">COMING SOON</span>
+          <p class="loyal-eyebrow">BUDDY'S ADVENTURES</p>
+          <h3>KRYSTLE BALL</h3>
+          <p class="loyal-author-line">AUTHOR OF BUDDY'S ADVENTURES</p>
+          <p class="loyal-lede">A heartwarming children's story world filled with friendship, courage, kindness and adventure. Follow Buddy's journey and be first to know when the books arrive.</p>
+          <div class="loyal-actions">
+            <a class="loyal-primary" href="#buddy-list" data-buddy-interest>JOIN THE BUDDY LIST →</a>
+            <a class="loyal-secondary" href="#buddy-books">DISCOVER THE BOOKS</a>
+          </div>
+          <small>BOOK RELEASES • AUTHOR UPDATES • LOYAL NEWS • FUTURE DROPS</small>
+        </div>
+
+        <figure class="loyal-main-art">
+          <img src="assets/krystle-ball-buddy-hero.webp?v=20260921-loyal1" alt="Krystle Ball with Buddy in a warm reading room for Buddy's Adventures" loading="lazy" decoding="async">
+          <figcaption>STORIES FILLED WITH HEART, FRIENDSHIP, AND ADVENTURE.</figcaption>
+        </figure>
+      </div>
+
+      <div class="buddy-about">
+        <div>
+          <p class="loyal-eyebrow">MEET BUDDY</p>
+          <h3>A BRIGHTER WORLD OF STORIES.</h3>
+        </div>
+        <p>Buddy's Adventures is a growing children's book world created to inspire young readers through stories full of heart, imagination and meaningful life lessons. Buddy's curiosity keeps the adventure moving; kindness, family and courage keep the stories grounded.</p>
+      </div>
+
+      <div class="buddy-store" id="buddy-books">
+        <div class="buddy-store-head">
+          <div>
+            <p class="loyal-eyebrow">THE BOOKS</p>
+            <h3>BUDDY'S ADVENTURES</h3>
+          </div>
+          <p>Amazon / Kindle purchase links will appear here as each title goes live. For now, join the list and get the release first.</p>
+        </div>
+
+        <div class="buddy-book-grid">
+          <article class="buddy-book-card">
+            <span class="buddy-book-number">BOOK 01</span>
+            <div class="buddy-book-icon" aria-hidden="true">☀</div>
+            <h4>BUDDY GOES TO THE BEACH</h4>
+            <p>A sunny adventure about searching, friendship, helping others and finding your way back to the people who love you.</p>
+            <span class="buddy-book-status">COMING SOON</span>
+          </article>
+
+          <article class="buddy-book-card">
+            <span class="buddy-book-number">BOOK 02</span>
+            <div class="buddy-book-icon" aria-hidden="true">⌂</div>
+            <h4>BUDDY FINDS A HOME</h4>
+            <p>A heartfelt story about belonging, trust, comfort and the moment Buddy finds his special person.</p>
+            <span class="buddy-book-status">COMING SOON</span>
+          </article>
+
+          <article class="buddy-book-card">
+            <span class="buddy-book-number">BOOK 03</span>
+            <div class="buddy-book-icon" aria-hidden="true">✦</div>
+            <h4>BUDDY GOES TO THE ZOO</h4>
+            <p>A playful dream adventure filled with animals, imagination, helping someone in need and Buddy's caring spirit.</p>
+            <span class="buddy-book-status">COMING SOON</span>
+          </article>
+        </div>
+
+        <div class="buddy-amazon-ready">
+          <span>AMAZON + KINDLE READY</span>
+          <p>When the books publish, each card can switch from <b>COMING SOON</b> to a direct <b>BUY ON AMAZON</b> / <b>READ ON KINDLE</b> link without redesigning the page.</p>
+        </div>
+      </div>
+
+      <div class="buddy-list" id="buddy-list">
+        <div class="buddy-list-copy">
+          <p class="loyal-eyebrow">EARLY ACCESS</p>
+          <h3>JOIN THE BUDDY LIST.</h3>
+          <p>Be first in line for book announcements, release dates, new Buddy adventures, author updates and what comes next from the LOYAL side.</p>
+        </div>
+        <div class="buddy-list-form" aria-label="Join the Buddy's Adventures mailing list">
+          <script async data-uid="49e14c32f9" src="https://jai-ghost.kit.com/49e14c32f9/index.js?v=20260921-loyal1"></script>
+        </div>
+      </div>
+
+      <div class="loyal-future">
+        <div>
+          <p class="loyal-eyebrow">MORE FROM THE LIGHT SIDE</p>
+          <h3>LOYAL WEAR</h3>
+          <span>COMING LATER</span>
+        </div>
+        <p>The LOYAL side won't stop at books. Future releases can grow into family-friendly apparel, uplifting designs and other projects built around the brighter side of Jai Ghost World.</p>
+      </div>
+
+      <p class="loyal-footnote">Buddy's Adventures titles and purchase links shown here are previews. Final editions, release dates and retailer availability will be added as publishing is completed.</p>
+    </section>
+
     <section class="panel bts" id="world">
       <div class="panel-head"><h2>THE WORLD</h2><span>STAGE. STUDIO. FILM. BEHIND THE MASK.</span></div>
       <div class="world-intro"><h3>YOU HEAR THE MUSIC.<br><em>NOW STEP INSIDE IT.</em></h3><p>Performance, process, masks, cameras and the moments that build Jai Ghost World.</p></div>
@@ -393,7 +504,7 @@
     <p>© <span id="year">2026</span> JAI GHOST WORLD. ALL RIGHTS RESERVED.</p>
   </footer>
 
-  <script src="script.js?v=20260921-wrath2" defer></script>
+  <script src="script.js?v=20260921-loyal1" defer></script>
   <script src="audio-player.js?v=20260916-vault4" defer></script>
   <script src="ghost-radio.js?v=20260916-radio4" defer></script>
 </body>
