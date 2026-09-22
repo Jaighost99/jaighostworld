@@ -86,7 +86,7 @@ const openModal=(modal,focusTarget)=>{modal.hidden=false;document.body.classList
 const closeModal=(modal,returnFocus)=>{modal.hidden=true;document.body.classList.remove('jgw-modal-open');returnFocus?.focus()};
 
 /* Spotify music player — keep listeners inside Jai Ghost World */
-const spotifyLaunchers=[...document.querySelectorAll('a[href*="open.spotify.com"]')];
+const spotifyLaunchers=[...document.querySelectorAll('a[href*="open.spotify.com"], a[data-spotify-url]')];
 if(spotifyLaunchers.length){
   let spotifyReturnFocus=null;
   const spotifyModal=document.createElement('div');
@@ -105,13 +105,13 @@ if(spotifyLaunchers.length){
 
   const getSpotifyData=launcher=>{
     try{
-      const url=new URL(launcher.href);
+      const url=new URL(launcher.dataset.spotifyUrl||launcher.href,window.location.href);
       const parts=url.pathname.split('/').filter(Boolean);
       const type=parts[0];
       const id=parts[1];
       if(!['track','album','artist','playlist','episode','show'].includes(type)||!id)return null;
       const cardTitle=launcher.querySelector('.release-meta b')?.textContent?.replace(/\s+/g,' ').trim();
-      const title=cardTitle||(type==='artist'?'JAI LOYAL':'NOW PLAYING');
+      const title=launcher.dataset.spotifyTitle||cardTitle||(type==='artist'?'JAI LOYAL':'NOW PLAYING');
       return{type,id,title};
     }catch{return null}
   };
