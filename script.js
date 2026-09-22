@@ -55,6 +55,10 @@ body.jgw-modal-open{overflow:hidden}
 .jgw-modal-actions{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:18px;flex-wrap:wrap}
 .jgw-youtube-link{display:inline-flex;align-items:center;min-height:44px;padding:11px 18px;border:1px solid var(--red,#bd171e);font-size:.56rem;letter-spacing:.15em}
 .jgw-youtube-link:hover,.jgw-youtube-link:focus-visible{background:var(--red,#bd171e)}
+.jgw-link-shell{width:min(680px,96vw)}
+.jgw-link-copy{margin:0 0 8px;color:#a4a7a4;font-size:.66rem;line-height:1.8}
+.jgw-stay-button{min-height:44px;padding:11px 18px;border:1px solid #515454;background:#080909;color:#eee;font:700 .52rem 'Space Mono',monospace;letter-spacing:.14em;cursor:pointer}
+.jgw-stay-button:hover,.jgw-stay-button:focus-visible{border-color:#fff;outline:none}
 .jgw-modal-note{color:#8e9190;font-size:.47rem;letter-spacing:.12em}
 .jgw-spotify-shell{width:min(760px,96vw)}
 .jgw-spotify-content{padding:clamp(28px,4vw,52px)}
@@ -82,7 +86,7 @@ const openModal=(modal,focusTarget)=>{modal.hidden=false;document.body.classList
 const closeModal=(modal,returnFocus)=>{modal.hidden=true;document.body.classList.remove('jgw-modal-open');returnFocus?.focus()};
 
 /* Spotify music player — keep listeners inside Jai Ghost World */
-const spotifyLaunchers=[...document.querySelectorAll('.release-card[href*="open.spotify.com"], .spotify-button[href*="open.spotify.com"]')];
+const spotifyLaunchers=[...document.querySelectorAll('a[href*="open.spotify.com"]')];
 if(spotifyLaunchers.length){
   let spotifyReturnFocus=null;
   const spotifyModal=document.createElement('div');
@@ -146,27 +150,66 @@ if(spotifyLaunchers.length){
   spotifyModal.addEventListener('keydown',e=>{if(e.key==='Escape')closeSpotify()});
 }
 
-/* Music-video modal */
-const watchWorld=document.querySelector('.watch-world');
-if(watchWorld){
-  const videoUrl=watchWorld.href;
-  const videoModal=document.createElement('div');
-  videoModal.className='jgw-modal';
-  videoModal.id='jgw-video-modal';
-  videoModal.hidden=true;
+/* Music-video modal — keep playable YouTube links inside Jai Ghost World */
+(() => {
+  const getYouTubeId = (href) => {
+    try {
+      const url = new URL(href, window.location.href);
+      if (url.hostname === 'youtu.be') return url.pathname.split('/').filter(Boolean)[0] || '';
+      if (url.hostname.includes('youtube.com')) {
+        if (url.pathname === '/watch') return url.searchParams.get('v') || '';
+        const embedMatch = url.pathname.match(/^\/embed\/([^/?#]+)/);
+        if (embedMatch) return embedMatch[1];
+      }
+    } catch (e) {}
+    return '';
+  };
+
+  const youtubeLaunchers = [...document.querySelectorAll('a[href*="youtu.be/"], a[href*="youtube.com/watch"], a[href*="youtube.com/embed/"]')]
+    .filter((link) => getYouTubeId(link.href));
+
+  if (!youtubeLaunchers.length) return;
+
+  let videoReturnFocus = null;
+  const videoModal = document.createElement('div');
+  videoModal.className = 'jgw-modal';
+  videoModal.id = 'jgw-video-modal';
+  videoModal.hidden = true;
   videoModal.setAttribute('role','dialog');
   videoModal.setAttribute('aria-modal','true');
   videoModal.setAttribute('aria-labelledby','jgw-video-title');
-  videoModal.innerHTML=`<div class="jgw-modal-backdrop" data-close-video></div><div class="jgw-modal-shell"><button class="jgw-close" type="button" aria-label="Close video">×</button><div class="jgw-video-content"><div class="jgw-kicker">JAI GHOST WORLD / MUSIC VIDEO</div><h2 id="jgw-video-title">I SEEN THROUGH THE DEVIL'S EYES</h2><div class="jgw-video-frame"><iframe title="I Seen Through the Devil's Eyes music video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div><div class="jgw-modal-actions"><span class="jgw-modal-note">SHORT FILMS + DOCUMENTARIES — COMING SOON</span><a class="jgw-youtube-link" href="${videoUrl}" target="_blank" rel="noopener noreferrer">WATCH ON YOUTUBE ↗</a></div></div></div>`;
+  videoModal.innerHTML = `<div class="jgw-modal-backdrop" data-close-video></div><div class="jgw-modal-shell"><button class="jgw-close" type="button" aria-label="Close video">×</button><div class="jgw-video-content"><div class="jgw-kicker">JAI GHOST WORLD / VISUAL</div><h2 id="jgw-video-title">NOW PLAYING</h2><div class="jgw-video-frame"><iframe title="Jai Ghost World video player" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><div class="jgw-modal-actions"><span class="jgw-modal-note">WATCH HERE. STAY INSIDE JAI GHOST WORLD.</span></div></div></div>`;
   document.body.appendChild(videoModal);
-  const videoClose=videoModal.querySelector('.jgw-close');
-  const videoFrame=videoModal.querySelector('iframe');
-  const stopAndClose=()=>{videoFrame.src='';closeModal(videoModal,watchWorld)};
-  watchWorld.addEventListener('click',e=>{e.preventDefault();videoFrame.src='https://www.youtube.com/embed/OOTt7VrOcS8?autoplay=1&rel=0&modestbranding=1';openModal(videoModal,videoClose)});
-  videoClose.addEventListener('click',stopAndClose);
-  videoModal.querySelector('[data-close-video]').addEventListener('click',stopAndClose);
-  videoModal.addEventListener('keydown',e=>{if(e.key==='Escape')stopAndClose()});
-}
+
+  const videoClose = videoModal.querySelector('.jgw-close');
+  const videoFrame = videoModal.querySelector('iframe');
+  const videoTitle = videoModal.querySelector('#jgw-video-title');
+
+  const closeVideo = () => {
+    videoFrame.src = '';
+    closeModal(videoModal, videoReturnFocus);
+  };
+
+  youtubeLaunchers.forEach((launcher) => {
+    launcher.addEventListener('click', (e) => {
+      const id = getYouTubeId(launcher.href);
+      if (!id) return;
+      e.preventDefault();
+      videoReturnFocus = launcher;
+      const cardTitle = launcher.querySelector('h3')?.textContent?.replace(/\s+/g,' ').trim()
+        || launcher.getAttribute('aria-label')
+        || launcher.textContent.replace(/\s+/g,' ').trim()
+        || 'JAI GHOST WORLD VISUAL';
+      videoTitle.textContent = cardTitle;
+      videoFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+      openModal(videoModal, videoClose);
+    });
+  });
+
+  videoClose.addEventListener('click', closeVideo);
+  videoModal.querySelector('[data-close-video]').addEventListener('click', closeVideo);
+  videoModal.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeVideo(); });
+})();
 
 /* Full interview modal */
 const pressPlayButtons=[...document.querySelectorAll('[data-press-play]')];
@@ -431,6 +474,76 @@ if(galleryImages.length){
   });
 })();
 
+
+/* External-link portal — first click stays inside Jai Ghost World */
+(() => {
+  const isExternal = (href) => {
+    try {
+      const url = new URL(href, window.location.href);
+      return /^https?:$/.test(url.protocol) && url.origin !== window.location.origin;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const isHandledMedia = (href) => /open\.spotify\.com|youtu\.be\/|youtube\.com\/(watch|embed)/i.test(href);
+  const externalLinks = [...document.querySelectorAll('a[href]')].filter((link) =>
+    isExternal(link.href) &&
+    !isHandledMedia(link.href) &&
+    !link.hasAttribute('data-external-direct')
+  );
+
+  if (!externalLinks.length) return;
+
+  let portalReturnFocus = null;
+  let pendingUrl = '';
+  const portal = document.createElement('div');
+  portal.className = 'jgw-modal';
+  portal.id = 'jgw-link-portal';
+  portal.hidden = true;
+  portal.setAttribute('role','dialog');
+  portal.setAttribute('aria-modal','true');
+  portal.setAttribute('aria-labelledby','jgw-link-title');
+  portal.innerHTML = `<div class="jgw-modal-backdrop" data-close-link></div><div class="jgw-modal-shell jgw-link-shell"><button class="jgw-close" type="button" aria-label="Close">×</button><div class="jgw-video-content"><div class="jgw-kicker">JAI GHOST WORLD / EXTERNAL DESTINATION</div><h2 id="jgw-link-title">OPEN DESTINATION?</h2><p class="jgw-link-copy">You are still inside Jai Ghost World. This destination lives on another service.</p><div class="jgw-modal-actions"><button class="jgw-stay-button" type="button" data-close-link>STAY HERE</button><a class="jgw-youtube-link" data-continue-link href="#" target="_blank" rel="noopener noreferrer">OPEN IN NEW TAB ↗</a></div></div></div>`;
+  document.body.appendChild(portal);
+
+  const portalClose = portal.querySelector('.jgw-close');
+  const continueLink = portal.querySelector('[data-continue-link]');
+  const portalTitle = portal.querySelector('#jgw-link-title');
+
+  const labelFor = (href) => {
+    try {
+      const host = new URL(href).hostname.replace(/^www\./,'');
+      if (host.includes('amazecommerce.com')) return 'OPEN GHOST-WEAR STORE?';
+      if (host.includes('facebook.com')) return 'OPEN FACEBOOK?';
+      if (host.includes('instagram.com')) return 'OPEN INSTAGRAM?';
+      if (host.includes('tiktok.com')) return 'OPEN TIKTOK?';
+      if (host.includes('soundcloud.com')) return 'OPEN SOUNDCLOUD?';
+      if (host.includes('snapchat.com')) return 'OPEN SNAPCHAT?';
+      if (host.includes('youtube.com')) return 'OPEN YOUTUBE?';
+      if (host.includes('x.com')) return 'OPEN X?';
+      return 'OPEN DESTINATION?';
+    } catch (e) {
+      return 'OPEN DESTINATION?';
+    }
+  };
+
+  const closePortal = () => closeModal(portal, portalReturnFocus);
+
+  externalLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      portalReturnFocus = link;
+      pendingUrl = link.href;
+      continueLink.href = pendingUrl;
+      portalTitle.textContent = labelFor(pendingUrl);
+      openModal(portal, portalClose);
+    });
+  });
+
+  portal.querySelectorAll('[data-close-link]').forEach((el) => el.addEventListener('click', closePortal));
+  portal.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePortal(); });
+})();
 
 /* LOYAL LIGHT-SIDE TRANSITION */
 (() => {
