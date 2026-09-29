@@ -55,7 +55,7 @@ const videoVaultLauncher = document.querySelector('[data-video-vault], .visual-c
 
 if (videoVaultLauncher) {
   videoVaultLauncher.textContent = 'EXPLORE MUSIC VIDEOS →';
-  videoVaultLauncher.href = '#video-vault';
+  videoVaultLauncher.href = '#visuals';
   videoVaultLauncher.removeAttribute('target');
   videoVaultLauncher.removeAttribute('rel');
   videoVaultLauncher.setAttribute('aria-haspopup', 'dialog');
@@ -256,7 +256,7 @@ if (siteNav && contactNavLink) {
 
   const radioLink = document.createElement('a');
   radioLink.className = 'ghost-radio-nav';
-  radioLink.href = '#ghost-radio';
+  radioLink.href = '#music';
   radioLink.textContent = 'GHOST RADIO';
   radioLink.setAttribute('aria-haspopup', 'dialog');
   radioLink.setAttribute('aria-controls', 'jgw-ghost-radio');
