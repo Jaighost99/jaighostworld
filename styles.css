@@ -676,3 +676,9 @@ body.loyal-mode #loyal{
   .loyal-sitebrand strong{font-size:1.55rem}
   .loyal-back{font-size:.4rem;padding:8px 10px}
 }
+
+
+/* Search-friendly footer links */
+.seo-footer-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin:8px auto 14px;max-width:900px}
+.seo-footer-nav a{color:#8f9290;font-size:.44rem;letter-spacing:.12em;text-decoration:none}
+.seo-footer-nav a:hover,.seo-footer-nav a:focus-visible{color:#fff;outline:none}
