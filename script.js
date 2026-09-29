@@ -443,3 +443,21 @@ if(galleryImages.length){
     setLoyalMode(true);
   }
 })();
+
+
+/* PERFORMANCE: defer below-fold contact background */
+(() => {
+  const contact = document.querySelector('.contact');
+  if (!contact) return;
+  const loadBackground = () => contact.classList.add('is-bg-ready');
+  if (!('IntersectionObserver' in window)) {
+    loadBackground();
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    loadBackground();
+    observer.disconnect();
+  }, { rootMargin: '500px 0px' });
+  observer.observe(contact);
+})();
