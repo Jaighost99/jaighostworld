@@ -802,3 +802,128 @@ body.loyal-mode #loyal{
   .ghost-feed-embed{padding:8px;min-height:360px}
   .ghost-social-links{padding:26px 18px}
 }
+
+
+/* FACEBOOK-LED GHOST FEED */
+.facebook-primary{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:28px;
+  align-items:center;
+  margin-bottom:clamp(42px,6vw,72px);
+  padding:clamp(26px,4vw,48px);
+  border:1px solid #315c9b;
+  background:
+    radial-gradient(circle at 12% 30%,rgba(52,105,190,.3),transparent 32%),
+    linear-gradient(135deg,#0c1118,#070809 62%);
+  box-shadow:0 24px 70px #0008;
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.facebook-primary::after{
+  content:"f";
+  position:absolute;
+  right:3%;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:Arial,sans-serif;
+  font-size:clamp(9rem,18vw,18rem);
+  font-weight:900;
+  line-height:.7;
+  color:rgba(73,125,210,.08);
+  pointer-events:none;
+}
+.facebook-primary:hover,
+.facebook-primary:focus-visible{
+  transform:translateY(-3px);
+  border-color:#5d8fdd;
+  box-shadow:0 30px 84px #000a;
+  outline:none;
+}
+.facebook-primary-copy{
+  position:relative;
+  z-index:1;
+  max-width:760px;
+}
+.facebook-kicker{
+  display:block;
+  color:#7ca9ef;
+  font-size:.46rem;
+  font-weight:800;
+  letter-spacing:.2em;
+}
+.facebook-primary-copy strong{
+  display:block;
+  margin:8px 0 10px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.6rem,7vw,7rem);
+  font-weight:400;
+  letter-spacing:.04em;
+  line-height:.82;
+  color:#fff;
+}
+.facebook-primary-copy p{
+  max-width:650px;
+  margin:0;
+  color:#b8bec6;
+  font-size:clamp(.6rem,.78vw,.73rem);
+  line-height:1.85;
+}
+.facebook-primary-cta{
+  position:relative;
+  z-index:1;
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  min-height:48px;
+  padding:13px 17px;
+  border:1px solid #4a74b5;
+  background:#111a27;
+  color:#fff;
+  font-size:.48rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  white-space:nowrap;
+}
+.facebook-primary-cta b{
+  color:#7ca9ef;
+  font-size:.9rem;
+}
+.ghost-feed-subhead{
+  display:grid;
+  grid-template-columns:minmax(0,.55fr) minmax(280px,.45fr);
+  gap:34px;
+  align-items:end;
+  margin-bottom:20px;
+}
+.ghost-feed-subhead h3{
+  margin:8px 0 0;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.8rem,4.8vw,4.9rem);
+  font-weight:400;
+  line-height:.85;
+}
+.ghost-feed-subhead>p{
+  margin:0;
+  color:#8f9290;
+  font-size:.56rem;
+  line-height:1.75;
+}
+.ghost-social-buttons a.is-primary-social{
+  border-color:#315c9b;
+  background:#0e1621;
+}
+.ghost-social-buttons a.is-primary-social b{
+  color:#7ca9ef;
+}
+.ghost-social-buttons a.is-primary-social:hover,
+.ghost-social-buttons a.is-primary-social:focus-visible{
+  border-color:#5d8fdd;
+  background:#111d2d;
+}
+@media(max-width:780px){
+  .facebook-primary,
+  .ghost-feed-subhead{grid-template-columns:1fr}
+  .facebook-primary-cta{width:100%;justify-content:space-between}
+}
