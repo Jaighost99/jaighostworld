@@ -123,6 +123,17 @@
     .motives-eye{position:absolute;z-index:2;right:9%;top:5%;font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,8rem);line-height:1;color:#7d0c12;opacity:.6;transform:rotate(9deg)}
     .motives .cover strong{z-index:3;left:7%;right:7%;bottom:8%;color:#f0efeb;font-family:'Bebas Neue',sans-serif;font-size:clamp(1.25rem,2.25vw,2.55rem);line-height:.84;letter-spacing:.04em;text-shadow:3px 3px #000}
     @media(max-width:820px){.release-grid.has-six{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      .loyal-portal{padding-bottom:var(--pad);background:linear-gradient(135deg,#fffdf8 0,#f5eee3 100%);color:#181512}
+    .loyal-portal .panel-head{border-color:#d8cbbb}
+    .loyal-portal .panel-head span{color:#786d60}
+    .loyal-portal-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(320px,1.1fr);gap:clamp(28px,5vw,80px);align-items:center;padding:clamp(32px,5vw,72px) 0}
+    .loyal-portal-copy h3{margin:8px 0 18px;font-family:'Bebas Neue',sans-serif;font-size:clamp(2.6rem,5vw,5.5rem);font-weight:400;line-height:.88;letter-spacing:.05em;color:#171411}
+    .loyal-portal-copy p{max-width:560px;color:#5f554b;font-size:.58rem;line-height:1.9}
+    .loyal-portal .loyal-eyebrow{color:#9a6c3a!important}
+    .loyal-portal-art{display:block;min-height:360px;overflow:hidden;border:1px solid #d7c8b8;background:#efe3d5}
+    .loyal-portal-art img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+    .loyal-portal-art:hover img,.loyal-portal-art:focus-visible img{transform:scale(1.02)}
+    @media(max-width:820px){.loyal-portal-grid{grid-template-columns:1fr}.loyal-portal-art{min-height:300px}}
   </style>
 </head>
 <body>
@@ -132,20 +143,12 @@
   <header class="site-header" id="top">
     <a class="brand brush" href="#top">JAI GHOST WORLD</a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation"><i></i><i></i></button>
-    <nav id="site-nav"><a href="#latest">Latest</a><a href="#visuals">Visuals</a><a href="#merch">Ghost-Wear</a><a href="#loyal" data-loyal-enter>LOYAL</a><a href="#world">The World</a><a href="#contact">Join</a></nav>
+    <nav id="site-nav"><a href="#latest">Latest</a><a href="#visuals">Visuals</a><a href="#merch">Ghost-Wear</a><a href="/krystle-ball/">KRYSTLE / BUDDY</a><a href="#world">The World</a><a href="#contact">Join</a></nav>
     <button class="instrumental-toggle" type="button" aria-label="Play Break Them instrumental" aria-pressed="false">▶ INSTRUMENTAL</button>
     <audio id="site-instrumental" preload="metadata" loop><source src="assets/break-them-instrumental.mp3" type="audio/mpeg"></audio>
     <a class="header-cta" href="#music">Enter the World</a>
   </header>
 
-  <div class="loyal-transition-screen" id="loyal-transition-screen" hidden aria-hidden="true">
-    <div class="loyal-transition-wash" aria-hidden="true"></div>
-    <div class="loyal-transition-message">
-      <span>JAI GHOST WORLD</span>
-      <strong>WELCOME TO THE LIGHT SIDE.</strong>
-      <small>LOYAL</small>
-    </div>
-  </div>
 
   <main id="main">
     <section class="hero">
@@ -390,105 +393,22 @@
     </section>
 
 
-    <section class="panel loyal" id="loyal" aria-labelledby="loyal-title">
-      <div class="loyal-light-ray" aria-hidden="true"></div>
-
-      <div class="loyal-sitebar" aria-label="LOYAL Light Side navigation">
-        <a class="loyal-sitebrand" href="#top" data-loyal-exit aria-label="Return to Jai Ghost World"><span>JAI GHOST WORLD</span><strong>LOYAL</strong></a>
-        <nav class="loyal-nav" aria-label="Light Side">
-          <a href="#buddy-books">BOOKS</a>
-          <a href="#buddy-list">JOIN THE BUDDY LIST</a>
-        </nav>
-        <button class="loyal-back" type="button" data-loyal-exit>← BACK TO GHOST</button>
+    <section class="panel loyal-portal" id="loyal" aria-labelledby="loyal-portal-title">
+      <div class="panel-head">
+        <h2 id="loyal-portal-title">KRYSTLE BALL</h2>
+        <span>BUDDY'S ADVENTURES • THE LIGHT SIDE</span>
       </div>
-
-      <div class="loyal-transition-copy">
-        <p class="loyal-eyebrow">THE LIGHT SIDE OF JAI GHOST WORLD</p>
-        <h2 id="loyal-title">WELCOME TO THE <em>LIGHT SIDE.</em></h2>
-        <p>Stories. Family. Heart. Imagination. A brighter side of the world built to grow with Buddy, Krystle, and everything LOYAL becomes next.</p>
+      <div class="loyal-portal-grid">
+        <div class="loyal-portal-copy">
+          <p class="loyal-eyebrow">AUTHOR • BUDDY'S ADVENTURES</p>
+          <h3>ENTER KRYSTLE'S WORLD.</h3>
+          <p>Meet Krystle Ball, explore Buddy's Adventures, follow the books, and enter the brighter side of Jai Ghost World.</p>
+          <a class="loyal-primary" href="/krystle-ball/">VISIT KRYSTLE BALL →</a>
+        </div>
+        <a class="loyal-portal-art" href="/krystle-ball/" aria-label="Visit Krystle Ball and Buddy's Adventures">
+          <img src="assets/krystle-ball-buddy-hero.webp?v=20260921-loyal1" alt="Krystle Ball with Buddy in a warm reading room for Buddy's Adventures" loading="lazy" decoding="async">
+        </a>
       </div>
-
-      <div class="loyal-hero">
-        <div class="loyal-copy">
-          <span class="loyal-coming">COMING SOON</span>
-          <p class="loyal-eyebrow">BUDDY'S ADVENTURES</p>
-          <h3>KRYSTLE BALL</h3>
-          <p class="loyal-author-line">AUTHOR OF BUDDY'S ADVENTURES</p>
-          <p class="loyal-lede">A heartwarming children's story world filled with friendship, courage, kindness and adventure. Follow Buddy's journey and be first to know when the books arrive.</p>
-          <div class="loyal-actions">
-            <a class="loyal-primary" href="#buddy-list" data-buddy-interest>JOIN THE BUDDY LIST →</a>
-            <a class="loyal-secondary" href="#buddy-books">DISCOVER THE BOOKS</a>
-          </div>
-          <small>BOOK RELEASES • AUTHOR UPDATES • LOYAL NEWS • FUTURE DROPS</small>
-        </div>
-
-        <figure class="loyal-main-art">
-          <img src="assets/krystle-ball-buddy-hero.webp?v=20260921-loyal1" alt="Krystle Ball with Buddy in a warm reading room for Buddy's Adventures" loading="lazy" decoding="async" fetchpriority="low">
-          <figcaption>STORIES FILLED WITH HEART, FRIENDSHIP, AND ADVENTURE.</figcaption>
-        </figure>
-      </div>
-
-      <div class="buddy-about">
-        <div>
-          <p class="loyal-eyebrow">MEET BUDDY</p>
-          <h3>A BRIGHTER WORLD OF STORIES.</h3>
-        </div>
-        <p>Buddy's Adventures is a growing children's book world created to inspire young readers through stories full of heart, imagination and meaningful life lessons. Buddy's curiosity keeps the adventure moving; kindness, family and courage keep the stories grounded.</p>
-      </div>
-
-      <div class="buddy-store" id="buddy-books">
-        <div class="buddy-store-head">
-          <div>
-            <p class="loyal-eyebrow">THE BOOKS</p>
-            <h3>BUDDY'S ADVENTURES</h3>
-          </div>
-          <p>Amazon / Kindle purchase links will appear here as each title goes live. For now, join the list and get the release first.</p>
-        </div>
-
-        <div class="buddy-book-grid">
-          <article class="buddy-book-card">
-            <span class="buddy-book-number">BOOK 01</span>
-            <div class="buddy-book-icon" aria-hidden="true">☀</div>
-            <h4>BUDDY GOES TO THE BEACH</h4>
-            <p>A sunny adventure about searching, friendship, helping others and finding your way back to the people who love you.</p>
-            <span class="buddy-book-status">COMING SOON</span>
-          </article>
-
-          <article class="buddy-book-card">
-            <span class="buddy-book-number">BOOK 02</span>
-            <div class="buddy-book-icon" aria-hidden="true">⌂</div>
-            <h4>BUDDY FINDS A HOME</h4>
-            <p>A heartfelt story about belonging, trust, comfort and the moment Buddy finds his special person.</p>
-            <span class="buddy-book-status">COMING SOON</span>
-          </article>
-
-          <article class="buddy-book-card">
-            <span class="buddy-book-number">BOOK 03</span>
-            <div class="buddy-book-icon" aria-hidden="true">✦</div>
-            <h4>BUDDY GOES TO THE ZOO</h4>
-            <p>A playful dream adventure filled with animals, imagination, helping someone in need and Buddy's caring spirit.</p>
-            <span class="buddy-book-status">COMING SOON</span>
-          </article>
-        </div>
-
-        <div class="buddy-amazon-ready">
-          <span>AMAZON + KINDLE READY</span>
-          <p>When the books publish, each card can switch from <b>COMING SOON</b> to a direct <b>BUY ON AMAZON</b> / <b>READ ON KINDLE</b> link without redesigning the page.</p>
-        </div>
-      </div>
-
-      <div class="buddy-list" id="buddy-list">
-        <div class="buddy-list-copy">
-          <p class="loyal-eyebrow">EARLY ACCESS</p>
-          <h3>JOIN THE BUDDY LIST.</h3>
-          <p>Be first in line for book announcements, release dates, new Buddy adventures, author updates and what comes next from the LOYAL side.</p>
-        </div>
-        <div class="buddy-list-form" aria-label="Join the Buddy's Adventures mailing list">
-          <script async data-uid="01bc8b18bd" src="https://jai-ghost.kit.com/01bc8b18bd/index.js"></script>
-        </div>
-      </div>
-
-      <p class="loyal-footnote">Buddy's Adventures titles and purchase links shown here are previews. Final editions, release dates and retailer availability will be added as publishing is completed.</p>
     </section>
 
     <section class="panel bts" id="world">
