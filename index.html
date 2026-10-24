@@ -177,6 +177,8 @@
         #double-feature-premiere .premiere-choice{padding:clamp(22px,4vw,48px) 16px;border:1px solid #70343a;background:#12090d}
         #double-feature-premiere .premiere-choice:nth-child(2){border-color:#365472;background:#080f1c}
         #double-feature-premiere .premiere-choice h3{font:400 clamp(1.8rem,4vw,3rem)/1 'Bebas Neue',sans-serif;margin:8px 0}
+        #double-feature-premiere .premiere-preview{background:#f0eded;color:#120b0d;border:0;padding:13px 22px;margin:5px auto 17px;cursor:pointer;font:700 .72rem 'Space Mono',monospace;letter-spacing:.08em}
+        #double-feature-premiere .premiere-preview:hover,#double-feature-premiere .premiere-preview:focus-visible{background:#d9a5ad;outline:2px solid #fff}
         #double-feature-premiere .premiere-status{font:.72rem 'Space Mono',monospace;color:#d8d8d8}
         @media(max-width:600px){#double-feature-premiere .premiere-choices{grid-template-columns:1fr}}
       </style>
@@ -194,9 +196,38 @@
       </figure>
       <p class="premiere-eyebrow">CHOOSE YOUR EXPERIENCE</p>
       <div class="premiere-choices">
-        <article class="premiere-choice"><p class="premiere-eyebrow">JAI LOYAL</p><h3>WHAT ARE THEIR MOTIVES</h3><p class="premiere-status">FULL MUSIC VIDEO · PREMIERES NOV 13</p></article>
-        <article class="premiere-choice"><p class="premiere-eyebrow">JAY GHOST</p><h3>NO PULSE</h3><p class="premiere-status">FULL MUSIC VIDEO · PREMIERES NOV 13</p></article>
+        <article class="premiere-choice">
+          <p class="premiere-eyebrow">JAI LOYAL</p><h3>WHAT ARE THEIR MOTIVES</h3>
+          <img src="assets/what%20are%20their%20motives%20cover%201650x1650%20for%20website.png" alt="What Are Their Motives official cover" loading="lazy" style="width:100%;max-width:390px;height:auto;margin:18px auto;display:block">
+          <button class="premiere-preview" type="button" data-audio="motives-preview" aria-pressed="false">▶ HEAR THE HOOK</button>
+          <audio id="motives-preview" preload="none" src="assets/WHAT%20ARE%20THEIR%20MOTIVES%20PREVIEW.mp3"></audio>
+          <p class="premiere-status">FULL MUSIC VIDEO · PREMIERES NOV 13 AT 6 PM ET</p>
+        </article>
+        <article class="premiere-choice">
+          <p class="premiere-eyebrow">JAI GHOST · FEAT. JD GREER</p><h3>NO PULSE</h3>
+          <img src="assets/NO%20PULSE%20OFFICIAL%20COVER%20for%20website.png" alt="No Pulse official cover" loading="lazy" style="width:100%;max-width:390px;height:auto;margin:18px auto;display:block">
+          <button class="premiere-preview" type="button" data-audio="pulse-preview" aria-pressed="false">▶ HEAR THE HOOK</button>
+          <audio id="pulse-preview" preload="none" src="assets/NO%20PULSE%20PREVIEW.mp3"></audio>
+          <p class="premiere-status">FULL MUSIC VIDEO · PREMIERES NOV 13 AT 6 PM ET</p>
+        </article>
       </div>
+      <script>
+        (() => {
+          const buttons=[...document.querySelectorAll('#double-feature-premiere .premiere-preview')];
+          const reset=(button)=>{button.textContent='▶ HEAR THE HOOK';button.setAttribute('aria-pressed','false')};
+          buttons.forEach(button=>{
+            const audio=document.getElementById(button.dataset.audio);
+            button.addEventListener('click',()=>{
+              if(!audio.paused){audio.pause();audio.currentTime=0;reset(button);return}
+              buttons.forEach(other=>{const track=document.getElementById(other.dataset.audio);track.pause();track.currentTime=0;reset(other)});
+              const siteAudio=document.getElementById('site-instrumental');if(siteAudio&&!siteAudio.paused)siteAudio.pause();
+              audio.play().then(()=>{button.textContent='Ⅱ STOP PREVIEW';button.setAttribute('aria-pressed','true')}).catch(()=>reset(button));
+            });
+            audio.addEventListener('ended',()=>reset(button));
+            audio.addEventListener('error',()=>{reset(button);button.textContent='PREVIEW UNAVAILABLE'});
+          });
+        })();
+      </script>
       <script>
         (() => {
           const target = Date.parse('2026-11-13T18:00:00-05:00');
