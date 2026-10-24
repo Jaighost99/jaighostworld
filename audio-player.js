@@ -6,10 +6,10 @@ if (instrumental && instrumentalToggle) {
 
   const syncInstrumentalButton = () => {
     const playing = !instrumental.paused;
-    instrumentalToggle.textContent = playing ? '❚❚ PAUSE' : '▶ INSTRUMENTAL';
+    instrumentalToggle.textContent = playing ? '❚❚ PAUSE' : '▶ SONG PREVIEW';
     instrumentalToggle.classList.toggle('is-playing', playing);
     instrumentalToggle.setAttribute('aria-pressed', String(playing));
-    instrumentalToggle.setAttribute('aria-label', playing ? 'Pause Break Them instrumental' : 'Play Break Them instrumental');
+    instrumentalToggle.setAttribute('aria-label', playing ? 'Pause Sadness, Tears, Anger, Hate preview' : 'Play Sadness, Tears, Anger, Hate preview');
   };
 
   instrumentalToggle.addEventListener('click', async () => {
