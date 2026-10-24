@@ -165,6 +165,54 @@
       <div class="hero-graffiti brush">MORE<br>THAN<br>MUSIC</div>
     </section>
 
+    <section id="double-feature-premiere" aria-labelledby="double-feature-title" style="padding:clamp(36px,6vw,90px) 20px;background:linear-gradient(115deg,#190608,#050507 48%,#071322);color:#f5f5f5;text-align:center;border-block:1px solid #5d2934">
+      <style>
+        #double-feature-premiere .premiere-eyebrow{font:700 .7rem 'Space Mono',monospace;letter-spacing:.18em;color:#d3a6ac}
+        #double-feature-premiere h2{font:400 clamp(3rem,8vw,7rem)/.95 'Bebas Neue',sans-serif;margin:15px 0}
+        #double-feature-premiere .premiere-clock{display:flex;justify-content:center;gap:clamp(7px,2vw,24px);margin:30px auto;flex-wrap:wrap}
+        #double-feature-premiere .premiere-unit{min-width:clamp(68px,16vw,150px);padding:14px 8px;background:#090b0ed9;border:1px solid #75505a}
+        #double-feature-premiere .premiere-number{display:block;font:400 clamp(2rem,6vw,4.5rem)/1 'Bebas Neue',sans-serif;font-variant-numeric:tabular-nums}
+        #double-feature-premiere .premiere-label{font:700 .6rem 'Space Mono',monospace;letter-spacing:.12em;color:#c6bfc3}
+        #double-feature-premiere .premiere-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:950px;margin:30px auto 0}
+        #double-feature-premiere .premiere-choice{padding:clamp(22px,4vw,48px) 16px;border:1px solid #70343a;background:#12090d}
+        #double-feature-premiere .premiere-choice:nth-child(2){border-color:#365472;background:#080f1c}
+        #double-feature-premiere .premiere-choice h3{font:400 clamp(1.8rem,4vw,3rem)/1 'Bebas Neue',sans-serif;margin:8px 0}
+        #double-feature-premiere .premiere-status{font:.72rem 'Space Mono',monospace;color:#d8d8d8}
+        @media(max-width:600px){#double-feature-premiere .premiere-choices{grid-template-columns:1fr}}
+      </style>
+      <p class="premiere-eyebrow">NOVEMBER 13, 2026 · 6 PM EASTERN / 3 PM PACIFIC</p>
+      <h2 id="double-feature-title">TWO SIDES. ONE ARTIST.</h2>
+      <p class="premiere-eyebrow" id="premiere-heading">COUNTDOWN TO THE DOUBLE-FEATURE PREMIERE</p>
+      <div class="premiere-clock" role="timer" aria-label="Time until premiere">
+        <div class="premiere-unit"><span class="premiere-number" id="premiere-days">--</span><span class="premiere-label">DAYS</span></div>
+        <div class="premiere-unit"><span class="premiere-number" id="premiere-hours">--</span><span class="premiere-label">HOURS</span></div>
+        <div class="premiere-unit"><span class="premiere-number" id="premiere-minutes">--</span><span class="premiere-label">MINUTES</span></div>
+        <div class="premiere-unit"><span class="premiere-number" id="premiere-seconds">--</span><span class="premiere-label">SECONDS</span></div>
+      </div>
+      <p class="premiere-eyebrow">CHOOSE YOUR EXPERIENCE</p>
+      <div class="premiere-choices">
+        <article class="premiere-choice"><p class="premiere-eyebrow">JAI LOYAL</p><h3>WHAT ARE THEIR MOTIVES</h3><p class="premiere-status">FULL MUSIC VIDEO · PREMIERES NOV 13</p></article>
+        <article class="premiere-choice"><p class="premiere-eyebrow">JAY GHOST</p><h3>NO PULSE</h3><p class="premiere-status">FULL MUSIC VIDEO · PREMIERES NOV 13</p></article>
+      </div>
+      <script>
+        (() => {
+          const target = Date.parse('2026-11-13T18:00:00-05:00');
+          const ids = ['premiere-days','premiere-hours','premiere-minutes','premiere-seconds'];
+          function tick(){
+            const remaining = Math.max(0,Math.floor((target-Date.now())/1000));
+            const values=[Math.floor(remaining/86400),Math.floor(remaining%86400/3600),Math.floor(remaining%3600/60),remaining%60];
+            ids.forEach((id,i)=>{document.getElementById(id).textContent=String(values[i]).padStart(2,'0')});
+            if(remaining===0){
+              document.getElementById('premiere-heading').textContent='NOW PREMIERING · CHOOSE YOUR EXPERIENCE';
+              document.querySelectorAll('#double-feature-premiere .premiere-status').forEach(el=>el.textContent='PREMIERE DAY · VIDEO COMING HERE');
+              clearInterval(interval);
+            }
+          }
+          tick();const interval=setInterval(tick,1000);
+        })();
+      </script>
+    </section>
+
     <section class="panel" id="next-music-star" aria-labelledby="next-music-star-title" style="background:#0b0b0b;border-top:1px solid #782028;border-bottom:1px solid #782028;text-align:center;padding:clamp(26px,5vw,64px) 20px">
       <p class="eyebrow" style="color:#e34b53">NEXT MUSIC STAR 2026 • VOTING IS LIVE</p>
       <h2 id="next-music-star-title" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,5rem);line-height:1;letter-spacing:.035em;margin:12px 0;color:#f4f4f4">THE WRATH OF GHOST HAS BEEN UNLEASHED!</h2>
