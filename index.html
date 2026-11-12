@@ -264,6 +264,22 @@
           <a class="solid-button" href="#double-feature-premiere" style="display:inline-block;background:#a51024;color:#fff;padding:16px 25px;text-decoration:none">WATCH THE DOUBLE-FEATURE TRAILER ▶</a>
         </div>
       </div>
+      <div id="no-pulse-social-teaser-wrap" style="max-width:900px;margin:28px auto 0;display:none;text-align:center">
+        <h3 style="font:400 clamp(1.4rem,3vw,2rem)/1 'Bebas Neue',sans-serif;letter-spacing:.12em;margin:0 0 15px">NO PULSE — OFFICIAL TEASER</h3>
+        <video id="no-pulse-social-teaser" controls playsinline preload="metadata" poster="assets/NO%20PULSE%20OFFICIAL%20COVER%20for%20website.png" aria-label="Watch the NO PULSE official social media teaser" style="width:100%;aspect-ratio:16/9;object-fit:contain;border:1px solid #782028;background:#000">
+          <source src="assets/no_pulse_social_teaser.mp4" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+      </div>
+      <script>
+      (() => {
+        const teaser=document.getElementById('no-pulse-social-teaser');
+        const holder=document.getElementById('no-pulse-social-teaser-wrap');
+        if(!teaser||!holder)return;
+        teaser.addEventListener('loadedmetadata',()=>{holder.style.display='block'});
+        teaser.addEventListener('error',()=>{holder.style.display='none'},true);
+      })();
+      </script>
       <style>@media(max-width:650px){#no-pulse-spotlight>div{grid-template-columns:1fr!important;text-align:center}#no-pulse-spotlight img{max-width:270px;margin:auto}#no-pulse-spotlight .eyebrow{line-height:1.7}}</style>
     </section>
 
