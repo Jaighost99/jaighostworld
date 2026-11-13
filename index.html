@@ -193,9 +193,9 @@
       <div class="premiere-container">
         <p class="premiere-eyebrow">FRIDAY, NOVEMBER 13, 2026 · 12:00 AM EASTERN · 9:00 PM PACIFIC NOV 12</p>
         <h2 id="double-feature-title">TWO SIDES. ONE ARTIST.</h2>
-        <p class="premiere-eyebrow" id="premiere-heading" aria-live="polite">TWO OFFICIAL MUSIC VIDEO PREMIERES · COUNTDOWN TO MIDNIGHT</p>
+        <p class="premiere-eyebrow" id="premiere-heading" aria-live="polite">TWO OFFICIAL MUSIC VIDEOS · COUNTDOWN TO 6 PM EASTERN</p>
         <p class="premiere-description">Two stories. Two worlds. One night. Watch both official music video premieres, presented on Flesh-N-Bone's YouTube channel.</p>
-        <div class="premiere-clock" id="premiere-countdown" role="timer" aria-label="Time until the midnight premieres">
+        <div class="premiere-clock" id="premiere-countdown" role="timer" aria-label="Time until 6 PM Eastern on November 13">
           <div class="premiere-unit"><span class="premiere-number" id="premiere-days">--</span><span class="premiere-label">DAYS</span></div>
           <div class="premiere-unit"><span class="premiere-number" id="premiere-hours">--</span><span class="premiere-label">HOURS</span></div>
           <div class="premiere-unit"><span class="premiere-number" id="premiere-minutes">--</span><span class="premiere-label">MINUTES</span></div>
@@ -229,7 +229,7 @@
       </div>
       <script>
         (() => {
-          const target = Date.parse('2026-11-13T00:00:00-05:00');
+          const target = Date.parse('2026-11-13T18:00:00-05:00');
           const ids = ['premiere-days','premiere-hours','premiere-minutes','premiere-seconds'];
           const heading=document.getElementById('premiere-heading');
           const clock=document.getElementById('premiere-countdown');
@@ -241,9 +241,9 @@
             const values=[Math.floor(remaining/86400),Math.floor(remaining%86400/3600),Math.floor(remaining%3600/60),remaining%60];
             ids.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent=String(values[i]).padStart(2,'0')});
             if(remaining===0){
-              heading.textContent='THE MIDNIGHT PREMIERE HAS ARRIVED · WATCH BOTH VIDEOS';
+              heading.textContent='6 PM EASTERN HAS ARRIVED · WATCH BOTH VIDEOS';
               clock.style.display='none';
-              statuses.forEach(el=>{el.textContent='PREMIERE START TIME REACHED · WATCH ON YOUTUBE'});
+              statuses.forEach(el=>{el.textContent='BOTH OFFICIAL VIDEOS · WATCH ON YOUTUBE'});
               links.forEach(el=>{el.textContent='▶ WATCH THE OFFICIAL VIDEO ON YOUTUBE'});
               if(interval)clearInterval(interval);
             }
