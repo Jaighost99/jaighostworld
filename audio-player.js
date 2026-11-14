@@ -4,12 +4,23 @@ const instrumentalToggle = document.querySelector('.instrumental-toggle');
 if (instrumental && instrumentalToggle) {
   instrumental.volume = 0.32;
 
+  const activePreviewTitle = () => {
+    const activeSource = decodeURIComponent(instrumental.currentSrc || '');
+    return activeSource.includes('FUCK_A_NIGHTMARE_52sec_preview.mp3')
+      ? 'FUCK A NIGHTMARE'
+      : 'Sadness, Tears, Anger, Hate';
+  };
+
   const syncInstrumentalButton = () => {
     const playing = !instrumental.paused;
-    instrumentalToggle.textContent = playing ? '❚❚ PAUSE' : '▶ SONG PREVIEW';
+    const song = activePreviewTitle();
+    instrumentalToggle.textContent = playing
+      ? '❚❚ PAUSE'
+      : (song === 'FUCK A NIGHTMARE' ? '▶ FUCK A NIGHTMARE' : '▶ SONG PREVIEW');
     instrumentalToggle.classList.toggle('is-playing', playing);
     instrumentalToggle.setAttribute('aria-pressed', String(playing));
-    instrumentalToggle.setAttribute('aria-label', playing ? 'Pause Sadness, Tears, Anger, Hate preview' : 'Play Sadness, Tears, Anger, Hate preview');
+    instrumentalToggle.setAttribute('aria-label', (playing ? 'Pause ' : 'Play ') + song + ' preview');
+    instrumentalToggle.setAttribute('title', song + (song === 'FUCK A NIGHTMARE' ? ' — 52-second preview' : ' — song preview'));
   };
 
   instrumentalToggle.addEventListener('click', async () => {
@@ -24,8 +35,10 @@ if (instrumental && instrumentalToggle) {
     }
   });
 
+  instrumental.addEventListener('loadedmetadata', syncInstrumentalButton);
   instrumental.addEventListener('play', syncInstrumentalButton);
   instrumental.addEventListener('pause', syncInstrumentalButton);
+  instrumental.addEventListener('ended', syncInstrumentalButton);
   instrumental.addEventListener('error', () => {
     instrumentalToggle.textContent = 'AUDIO UNAVAILABLE';
     instrumentalToggle.disabled = true;
