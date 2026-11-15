@@ -1,0 +1,50 @@
+name: Optimize Jai Ghost World Artwork
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/optimize-ghost-world-art.yml"
+      - "tools/optimize_ghost_world_images.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: optimize-ghost-world-art-main
+  cancel-in-progress: false
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install image encoder
+        run: python -m pip install "Pillow==11.2.1"
+
+      - name: Create validated optimized artwork
+        run: python tools/optimize_ghost_world_images.py
+
+      - name: Commit smaller images and update references
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html styles.css ghost-experience.css assets/*.webp
+          if git diff --cached --quiet; then
+            echo "No improvements required."
+          else
+            git commit -m "Optimize homepage artwork without changing original images"
+            git push origin HEAD:main
+          fi
