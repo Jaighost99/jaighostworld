@@ -96,3 +96,12 @@
   .release-meta small,.release-meta b,.panel-head span{font-size:.68rem}
   .contact-socials,.contact-item small{font-size:.78rem}
 }
+
+/* WCAG touch-target spacing; preserves the dark look. */
+.seo-footer-nav{gap:4px 8px}
+.seo-footer-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:9px 11px;font-size:.62rem;line-height:1.35}
+.about-copy .outline-button{position:relative;z-index:2;display:inline-flex;align-items:center;min-height:48px;padding-block:14px}
+@media(max-width:560px){
+  .seo-footer-nav{gap:4px 5px}
+  .seo-footer-nav a{min-height:40px;font-size:.71rem;padding:10px 11px}
+}
