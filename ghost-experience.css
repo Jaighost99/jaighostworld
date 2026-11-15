@@ -79,3 +79,20 @@
   .jgw-intro-copy{animation:none}
   #double-feature-premiere .jgw-feature-play img{transition:none}
 }
+
+/* Live Lighthouse fixes: readable type, stronger red contrast, accessible signup fallback. */
+.red-label{color:#f06b76!important;font-weight:700}
+.kit-signup-fallback{display:block!important;margin:12px auto 4px!important;max-width:550px;color:#ded6d8!important;font-size:clamp(.72rem,1.8vw,.86rem)!important;line-height:1.65}
+.kit-signup-fallback a{display:inline-flex!important;align-items:center;justify-content:center;min-height:45px;margin-top:9px;padding:11px 18px;border:1px solid #d25160;background:#8a1624;color:#fff!important;font-size:.76rem!important;font-weight:700!important;letter-spacing:.05em;text-decoration:none}
+.kit-signup-fallback a:hover,.kit-signup-fallback a:focus-visible{background:#bd2639;outline:2px solid #fff;outline-offset:2px}
+@media(max-width:560px){
+  .about-copy p,.press-copy p,.ghost-feed-intro>p,.ghost-social-links>p,.facebook-primary-copy p,.ghost-feed-subhead>p,.latest-copy>p:not(.eyebrow),.merch-intro>p,.world-intro p,.live-copy p,.loyal-portal-copy p{
+    font-size:.83rem!important;line-height:1.8!important;
+  }
+  .red-label{font-size:.65rem!important;letter-spacing:.09em}
+  #double-feature-premiere .premiere-signup > p{font-size:.84rem!important}
+  #double-feature-premiere .premiere-eyebrow{font-size:.73rem!important}
+  .ghost-social-buttons a,.facebook-primary-cta{font-size:.73rem!important;letter-spacing:.06em!important}
+  .release-meta small,.release-meta b,.panel-head span{font-size:.68rem}
+  .contact-socials,.contact-item small{font-size:.78rem}
+}
