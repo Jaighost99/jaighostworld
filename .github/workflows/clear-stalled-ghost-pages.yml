@@ -1,0 +1,38 @@
+name: Clear Stalled Ghost World Pages Build
+
+# Runs once when this repair workflow is added. It targets one known older,
+# stalled GitHub Pages run and never cancels the newest website deployment.
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/clear-stalled-ghost-pages.yml"
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  clear:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const staleId = 43679054741;
+            const staleSha = "b2786c242947420af1d877b6ece4a5bc30040017";
+            const result = await github.rest.actions.getWorkflowRun({owner,repo,run_id:staleId});
+            const run = result.data;
+            core.info("Older Pages build: " + run.status + " / " + run.conclusion);
+            if (run.head_sha !== staleSha) {
+              core.warning("Unexpected SHA on old run; refusing to touch it.");
+              return;
+            }
+            if (["in_progress","queued","pending","waiting","requested"].includes(run.status)) {
+              await github.rest.actions.cancelWorkflowRun({owner,repo,run_id:staleId});
+              core.info("Cancellation requested for older stalled build only.");
+            } else {
+              core.info("Older build already finished; no change required.");
+            }
