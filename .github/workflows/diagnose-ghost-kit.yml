@@ -1,0 +1,24 @@
+name: Diagnose Ghost World Kit Signup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-ghost-kit.yml"
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compare Kit script and landing page responses
+        shell: bash
+        run: |
+          for url in             'https://jai-ghost.kit.com/49e14c32f9/index.js?v=20260915-1'             'https://jai-ghost.kit.com/49e14c32f9/index.js'             'https://jai-ghost.kit.com/49e14c32f9'             'https://f.convertkit.com/ckjs/ck.5.js'; do
+            echo "====== URL: $url"
+            curl -sSL -D /tmp/kit-headers -o /tmp/kit-body --max-time 20 -w 'HTTP:%{http_code} EFFECTIVE:%{url_effective} CONTENT:%{content_type} SIZE:%{size_download}\n' "$url" || true
+            grep -Ei 'HTTP/|location:|content-type:|cross-origin-resource-policy:|access-control-allow-origin:|x-frame-options:' /tmp/kit-headers | tail -14 || true
+            echo 'BODY HEAD:'
+            head -c 220 /tmp/kit-body | tr '\n' ' ' || true
+            echo
+          done
