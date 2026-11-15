@@ -1,0 +1,49 @@
+name: Ghost World Live Mobile Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ghost-world-live-check.yml"
+      - "tools/ghost_world_live_check.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up browser testing tools
+        run: npm install --no-save puppeteer-core@24 lighthouse@12
+
+      - name: Check live homepage interactions on mobile
+        run: |
+          export CHROME_PATH="$(command -v google-chrome-stable || command -v google-chrome)"
+          node tools/ghost_world_live_check.mjs
+
+      - name: Lighthouse mobile performance and accessibility
+        if: always()
+        run: |
+          mkdir -p lighthouse-report
+          export CHROME_PATH="$(command -v google-chrome-stable || command -v google-chrome)"
+          npx lighthouse@12 https://jaighostworld.com/ --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=lighthouse-report/mobile.json --only-categories=performance,accessibility,best-practices,seo --quiet
+          node -e 'const d=require("./lighthouse-report/mobile.json");const c=d.categories;const a=d.audits;console.log("GHOST_WORLD_LIGHTHOUSE",JSON.stringify({performance:Math.round(c.performance.score*100),accessibility:Math.round(c.accessibility.score*100),best_practices:Math.round(c["best-practices"].score*100),seo:Math.round(c.seo.score*100),lcp_seconds:Math.round((a["largest-contentful-paint"].numericValue||0)/100)/10,cls:a["cumulative-layout-shift"].numericValue,first_contentful_paint_seconds:Math.round((a["first-contentful-paint"].numericValue||0)/100)/10}));'
+
+      - name: Preserve mobile screenshot and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghost-world-live-mobile-audit
+          path: |
+            ghost-world-mobile.png
+            ghost-world-browser-report.json
+            lighthouse-report/mobile.json
+          retention-days: 7
