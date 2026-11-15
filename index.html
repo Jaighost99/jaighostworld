@@ -150,6 +150,7 @@
     .tiktok-fallback a{color:#fff;text-decoration:underline;text-decoration-color:#b31b2c;text-underline-offset:4px}
     @media(max-width:560px){.hero-actions{gap:10px}.hero-actions a{font-size:.52rem;min-height:44px;padding:11px 13px;letter-spacing:.06em}}
   </style>
+  <link rel="stylesheet" href="ghost-experience.css?v=20261114-a">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -159,7 +160,7 @@
     <a class="brand brush" href="#top">JAI GHOST WORLD</a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation"><i></i><i></i></button>
     <nav id="site-nav"><a href="#double-feature-premiere">New Videos</a><a href="#visuals">Visuals</a><a href="#merch">Ghost-Wear</a><a href="https://krystlememoir.jaighostworld.com/">KRYSTLE / BUDDY</a><a href="#world">The World</a><a href="#join-the-world">Subscribe</a></nav>
-    <button class="instrumental-toggle" type="button" aria-label="Play FUCK A NIGHTMARE 52-second preview" aria-pressed="false" title="FUCK A NIGHTMARE — 52-second preview">▶ FUCK A NIGHTMARE</button>
+    <div class="nightmare-player"><span class="nightmare-status" aria-live="off">52-SECOND SONG PREVIEW</span><div class="nightmare-player-row"><button class="instrumental-toggle" type="button" aria-label="Play FUCK A NIGHTMARE 52-second preview" aria-pressed="false" title="FUCK A NIGHTMARE — 52-second preview">▶ FUCK A NIGHTMARE</button><div class="nightmare-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div></div></div>
     <audio id="site-instrumental" preload="metadata"><source src="assets/FUCK_A_NIGHTMARE_52sec_preview.mp3?v=20261114-2" type="audio/mpeg"></audio>
     <a class="header-cta" href="#double-feature-premiere">Watch Now</a>
   </header>
@@ -173,14 +174,15 @@
         <h1 class="brush">JAI GHOST<br>WORLD</h1>
         <p>MUSIC. FILM. VISUALS. STORYTELLING.</p>
         <span class="red-rule"></span>
-        <div class="hero-actions"><a class="outline-button" href="#double-feature-premiere">WATCH BOTH VIDEOS NOW <b>→</b></a><a class="hero-join-button" href="#join-the-world">JOIN THE WORLD →</a></div>
+        <div class="hero-actions"><a class="outline-button" href="#double-feature-premiere" data-ghost-event="hero_watch_click" data-placement="hero">WATCH BOTH VIDEOS NOW <b>→</b></a><a class="hero-join-button" href="#join-the-world" data-ghost-event="signup_cta_click" data-placement="hero">JOIN THE WORLD →</a></div>
         <small>DARKER<br>DEEPER<br>REALER<br>A BIGGER STORY</small>
+        <button class="jgw-enter-button" type="button" data-open-ghost-intro aria-haspopup="dialog">✦ ENTER GHOST WORLD</button>
       </div>
       <div class="hero-side-note">ART<br>PEOPLE<br>PAIN<br>PURPOSE<br>JAI GHOST WORLD</div>
       <div class="hero-graffiti brush">MORE<br>THAN<br>MUSIC</div>
     </section>
 
-    <!-- Official Flesh-N-Bone YouTube premieres: November 13, 2026 at 12:00 AM EST. -->
+    <!-- The official double feature premiered November 13, 2026; both films are available now. -->
     <section id="double-feature-premiere" aria-labelledby="double-feature-title" style="padding:clamp(42px,6vw,95px) 20px;background:linear-gradient(115deg,#190608,#050507 48%,#071322);color:#f5f5f5;text-align:center;border-block:1px solid #5d2934">
       <style>
         #double-feature-premiere .premiere-container{max-width:1200px;margin:auto}
@@ -219,7 +221,7 @@
             <p class="premiere-eyebrow">JAI LOYAL · OFFICIAL MUSIC VIDEO</p>
             <h3>WHAT ARE THEIR MOTIVES</h3>
             <div class="premiere-video">
-              <iframe title="What Are Their Motives — official music video" src="https://www.youtube-nocookie.com/embed/08gHX5cRoWQ" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <button class="jgw-feature-play" type="button" data-video-id="08gHX5cRoWQ" data-video-title="What Are Their Motives" aria-label="Play What Are Their Motives official music video"><img src="https://i.ytimg.com/vi/08gHX5cRoWQ/hqdefault.jpg" alt="What Are Their Motives video thumbnail" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/what%20are%20their%20motives%20cover%201650x1650%20for%20website.png'"><span class="jgw-feature-play-icon" aria-hidden="true">▶</span><span class="jgw-feature-play-label">PLAY THE OFFICIAL VIDEO</span></button>
             </div>
             <p class="premiere-status">OFFICIAL MUSIC VIDEO · WATCH NOW</p>
             <a class="premiere-watch" href="https://youtu.be/08gHX5cRoWQ" target="_blank" rel="noopener noreferrer">▶ WATCH THE OFFICIAL VIDEO</a>
@@ -228,14 +230,14 @@
             <p class="premiere-eyebrow">JAI LOYAL FEAT. JD GREER · OFFICIAL MUSIC VIDEO</p>
             <h3>NO PULSE</h3>
             <div class="premiere-video">
-              <iframe title="No Pulse — official music video" src="https://www.youtube-nocookie.com/embed/qqi93kNNCpI" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <button class="jgw-feature-play" type="button" data-video-id="qqi93kNNCpI" data-video-title="No Pulse" aria-label="Play No Pulse official music video"><img src="https://i.ytimg.com/vi/qqi93kNNCpI/hqdefault.jpg" alt="No Pulse video thumbnail" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/NO%20PULSE%20OFFICIAL%20COVER%20for%20website.png'"><span class="jgw-feature-play-icon" aria-hidden="true">▶</span><span class="jgw-feature-play-label">PLAY THE OFFICIAL VIDEO</span></button>
             </div>
             <p class="premiere-status">OFFICIAL MUSIC VIDEO · WATCH NOW</p>
             <a class="premiere-watch" href="https://youtu.be/qqi93kNNCpI" target="_blank" rel="noopener noreferrer">▶ WATCH THE OFFICIAL VIDEO</a>
           </article>
         </div>
         <p class="premiere-host">OFFICIAL VIDEOS HOSTED BY FLESH-N-BONE ON YOUTUBE</p>
-        <aside class="premiere-signup" aria-label="Subscribe for Jai Ghost World releases"><strong>THIS IS ONLY THE BEGINNING.</strong><p>Get the next music, visuals and exclusive drops from inside Jai Ghost World.</p><a href="#join-the-world">JOIN THE WORLD →</a></aside>
+        <aside class="premiere-signup" id="join-the-world" aria-label="Subscribe to Jai Ghost World updates"><span class="red-label">JOIN THE TRANSMISSION</span><strong>THIS IS ONLY THE BEGINNING.</strong><p>Get new music, cinematic visuals, GHOST-WEAR drops and broadcast updates. Join the world and stay ahead of the next transmission.</p><div class="newsletter-form" aria-label="Jai Ghost World email signup"><script async data-uid="49e14c32f9" src="https://jai-ghost.kit.com/49e14c32f9/index.js?v=20260915-1"></script></div></aside>
       </div>
 
     </section>
@@ -334,9 +336,9 @@
           <p class="live-kicker">THE WORLD HAS ITS OWN CHANNEL.</p>
           <h3>WHEN THE LIGHT<br>TURNS RED,<br><b>YOU'RE HERE.</b></h3>
           <span class="red-rule"></span>
-          <p>Live concerts, conversations, premieres and transmissions from inside Jai Ghost World. The broadcast will play right here—no need to leave the world.</p>
+          <p>Live concerts, conversations, premieres and transmissions from inside Jai Ghost World. The broadcast will play right here—no need to leave the world. Join the mailing list for broadcast news.</p>
           <div class="live-actions">
-            <a class="outline-button small" href="#contact">SUPPORT THE WORLD →</a>
+            <a class="outline-button small" href="#join-the-world" data-ghost-event="ghost_stream_notify_click" data-placement="ghost_stream">GET BROADCAST UPDATES →</a>
             <a class="text-link" href="#merch">EXPLORE MERCH →</a>
           </div>
         </div>
@@ -447,7 +449,6 @@
           </div>
         </aside>
       </div>
-      <script async src="https://www.tiktok.com/embed.js"></script>
     </section>
 
     <section class="panel merch" id="merch">
@@ -515,15 +516,13 @@
         <a class="contact-item" href="mailto:Management@jaighostworld.com"><b>✉</b><span><strong>BOOKING</strong><small>Management@jaighostworld.com</small></span></a>
         <a class="contact-item" href="https://www.instagram.com/Jailoyal" target="_blank" rel="noopener noreferrer"><b>◎</b><span><strong>INSTAGRAM</strong><small>@Jailoyal</small></span></a>
         <a class="contact-item" href="https://youtube.com/@jailoyal?si=Z-2M_NoXxeqx1zyN" target="_blank" rel="noopener noreferrer"><b>▶</b><span><strong>YOUTUBE</strong><small>@jailoyal</small></span></a>
-        <div class="contact-newsletter" id="join-the-world">
+        <div class="contact-newsletter">
           <div class="newsletter-copy">
             <span class="red-label">JOIN THE TRANSMISSION</span>
             <h3>JOIN THE WORLD</h3>
             <p>New music, cinematic visuals, GHOST-WEAR drops and exclusives—sent from inside the world.</p>
           </div>
-          <div class="newsletter-form" aria-label="Join the Jai Ghost World mailing list">
-            <script async data-uid="49e14c32f9" src="https://jai-ghost.kit.com/49e14c32f9/index.js?v=20260915-1"></script>
-          </div>
+          <div class="newsletter-form" aria-label="Go to the Jai Ghost World mailing list"><a class="jgw-newsletter-return" href="#join-the-world" data-ghost-event="signup_cta_click" data-placement="contact">JOIN THE WORLD →</a></div>
         </div>
         <a class="message-button" href="mailto:Management@jaighostworld.com">SEND A MESSAGE →</a>
       </div>
@@ -547,9 +546,25 @@
     </nav>
     <p>© <span id="year">2026</span> JAI GHOST WORLD. ALL RIGHTS RESERVED.</p>
   </footer>
+  <div class="jgw-intro-modal" id="jgw-intro-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="jgw-intro-title" hidden>
+    <div class="jgw-intro-backdrop" data-close-intro></div>
+    <div class="jgw-intro-panel">
+      <button class="jgw-intro-close" type="button" aria-label="Close Ghost World entrance" data-close-intro>×</button>
+      <div class="jgw-intro-copy">
+        <span class="jgw-intro-kicker">THE PORTAL IS OPEN</span>
+        <h2 id="jgw-intro-title">WELCOME TO<br>GHOST WORLD.</h2>
+        <p>Check it out. Stay with me. There’s more to come.</p>
+        <div class="jgw-intro-choices">
+          <a href="#double-feature-premiere" data-intro-destination data-ghost-event="intro_watch_click" data-placement="entrance">WATCH THE DOUBLE FEATURE →</a>
+          <a href="#join-the-world" data-intro-destination data-ghost-event="signup_cta_click" data-placement="entrance">JOIN THE WORLD →</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js?v=20260929-perf1" defer></script>
   <script src="audio-player.js?v=20261114-nightmare-preview" defer></script>
   <script src="ghost-radio.js?v=20260916-radio4" defer></script>
+  <script src="ghost-experience.js?v=20261114-a" defer></script>
 </body>
 </html>
