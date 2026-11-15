@@ -6,6 +6,8 @@ on:
     paths:
       - ".github/workflows/ghost-world-live-check.yml"
       - "tools/ghost_world_live_check.mjs"
+      - "index.html"
+      - "script.js"
   workflow_dispatch:
 
 concurrency:
