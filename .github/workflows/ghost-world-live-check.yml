@@ -6,10 +6,11 @@ on:
     paths:
       - ".github/workflows/ghost-world-live-check.yml"
       - "tools/ghost_world_live_check.mjs"
-      - "index.html"
-      - "ghost-experience.css"
-      - "script.js"
   workflow_dispatch:
+
+concurrency:
+  group: ghost-world-live-audit-main
+  cancel-in-progress: true
 
 permissions:
   contents: read
