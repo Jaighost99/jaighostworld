@@ -1,12 +1,27 @@
-// Google Analytics 4 — Jai Ghost World
+// Google Analytics 4 — keep event/pageview queue available immediately, load
+// the 180KB third-party library after the first screen has had time to paint.
 window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments)}
+function gtag(){window.dataLayer.push(arguments)}
 gtag('js',new Date());
 gtag('config','G-ZK5H5NNYMW');
-const gaScript=document.createElement('script');
-gaScript.async=true;
-gaScript.src='https://www.googletagmanager.com/gtag/js?id=G-ZK5H5NNYMW';
-document.head.appendChild(gaScript);
+let gaStarted=false;
+function loadGA(){
+  if(gaStarted)return;
+  gaStarted=true;
+  const gaScript=document.createElement('script');
+  gaScript.async=true;
+  gaScript.src='https://www.googletagmanager.com/gtag/js?id=G-ZK5H5NNYMW';
+  document.head.appendChild(gaScript);
+}
+// Any intentional action starts analytics right away, so click events stay queued.
+document.addEventListener('pointerdown',loadGA,{once:true,passive:true,capture:true});
+document.addEventListener('keydown',loadGA,{once:true,capture:true});
+const scheduleGA=()=>{
+  const later=()=>{if('requestIdleCallback' in window)window.requestIdleCallback(loadGA,{timeout:1800});else loadGA()};
+  window.setTimeout(later,900);
+};
+if(document.readyState==='complete')scheduleGA();
+else window.addEventListener('load',scheduleGA,{once:true});
 
 const button=document.querySelector('.menu-toggle'),nav=document.querySelector('#site-nav');
 if(button&&nav){
