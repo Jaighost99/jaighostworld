@@ -130,7 +130,7 @@ if(spotifyLaunchers.length){
     if(!data)return;
     const small=launcher.querySelector('.release-meta small');
     if(small)small.textContent='Play here';
-    if(launcher.classList.contains('release-card'))launcher.setAttribute('aria-label',`Play here — ${data.title} inside Jai Ghost World`);
+    // The release card's visible text supplies the accessible name.
     if(launcher.classList.contains('spotify-button'))launcher.childNodes[launcher.childNodes.length-1].textContent=' PLAY JAI LOYAL HERE →';
     launcher.addEventListener('click',e=>{
       e.preventDefault();
