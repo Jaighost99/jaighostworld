@@ -44,7 +44,7 @@
 .jgw-intro-modal[hidden]{display:none!important}
 .jgw-intro-modal{position:fixed;z-index:1200;inset:0;display:grid;place-items:center;padding:18px}
 .jgw-intro-backdrop{position:absolute;inset:0;background:#020303f3;backdrop-filter:blur(7px)}
-.jgw-intro-panel{position:relative;display:grid;place-items:center;isolation:isolate;width:min(900px,100%);min-height:min(80vh,660px);overflow:hidden;border:1px solid #8a222e;background:#090a0a url('assets/hero-jai-ghost.png') center/cover no-repeat;box-shadow:0 32px 100px #000}
+.jgw-intro-panel{position:relative;display:grid;place-items:center;isolation:isolate;width:min(900px,100%);min-height:min(80vh,660px);overflow:hidden;border:1px solid #8a222e;background:#090a0a url('assets/hero-jai-ghost.webp') center/cover no-repeat;box-shadow:0 32px 100px #000}
 .jgw-intro-panel:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#000e,#000a 55%,#000b),linear-gradient(0deg,#1a070b98,transparent 50%)}
 .jgw-intro-close{position:absolute;right:14px;top:14px;width:46px;height:46px;border:1px solid #a53c43;background:#080808e8;color:#fff;font-size:1.7rem;cursor:pointer}
 .jgw-intro-close:hover,.jgw-intro-close:focus-visible{background:#a82131;outline:2px solid #fff}
