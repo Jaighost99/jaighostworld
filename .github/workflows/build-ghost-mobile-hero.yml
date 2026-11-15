@@ -1,0 +1,35 @@
+name: Build Ghost World Mobile Hero
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tools/create_mobile_hero.py"
+      - ".github/workflows/build-ghost-mobile-hero.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install "Pillow==11.2.1"
+      - run: python tools/create_mobile_hero.py
+      - name: Commit original-composition mobile hero
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hero-jai-ghost-mobile.webp
+          if git diff --cached --quiet; then
+            echo "Mobile hero already current"
+          else
+            git commit -m "Add lightweight faithful mobile Ghost hero artwork"
+            git push origin HEAD:main
+          fi
