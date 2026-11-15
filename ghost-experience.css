@@ -36,7 +36,7 @@
 #join-the-world{scroll-margin-top:88px}
 #double-feature-premiere .premiere-signup{max-width:860px;margin-top:34px}
 #double-feature-premiere .premiere-signup .newsletter-form{max-width:620px;margin:20px auto 0;min-height:64px}
-#double-feature-premiere .premiere-signup p{font-size:clamp(.72rem,1.6vw,.9rem)}
+#double-feature-premiere .premiere-signup > p{font-size:clamp(.72rem,1.6vw,.9rem)}
 .jgw-newsletter-return{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:1px solid #bd2637;background:#8d1521;color:#fff;font-size:.7rem;letter-spacing:.1em;font-weight:700;text-align:center}
 .jgw-newsletter-return:hover,.jgw-newsletter-return:focus-visible{background:#bf2839;outline:2px solid #fff;outline-offset:2px}
 
