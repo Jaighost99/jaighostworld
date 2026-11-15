@@ -14,6 +14,9 @@ await new Promise(resolve=>setTimeout(resolve,5500));
 const report = await page.evaluate(() => {
   const kitSection = document.querySelector("#join-the-world .newsletter-form");
   const kitForm = kitSection?.querySelector("form, iframe, .formkit-form, input[type=email]") || null;
+  const fallback = document.querySelector('#join-the-world a.kit-signup-fallback a, #join-the-world .kit-signup-fallback a');
+  const fallbackLink = fallback?.getAttribute("href") || "";
+  const signupFallbackPresent = fallbackLink === "https://jai-ghost.kit.com/49e14c32f9" && fallback.getClientRects().length > 0;
   const assets = [...document.querySelectorAll("img")].filter(el => el.complete).map(el => ({
     path:(el.currentSrc||el.src).split("/").pop(),ok:el.naturalWidth>0
   }));
@@ -28,6 +31,8 @@ const report = await page.evaluate(() => {
     kit_script_present:!!document.querySelector('script[data-uid="49e14c32f9"]'),
     kit_embedded_form_rendered:!!kitForm,
     email_input_present:!!kitSection?.querySelector('input[type="email"]'),
+    signup_fallback_present:signupFallbackPresent,
+    signup_path_visible:!!kitForm || signupFallbackPresent,
     missing_loaded_images:assets.filter(x=>!x.ok).map(x=>x.path).slice(0,15),
     horizontal_overflow:document.documentElement.scrollWidth>innerWidth+1
   };
@@ -43,7 +48,12 @@ report.js_errors=errors;
 console.log("GHOST_WORLD_BROWSER_REPORT",JSON.stringify(report));
 fs.writeFileSync("ghost-world-browser-report.json",JSON.stringify(report,null,2));
 await browser.close();
-const hardFailures=["hero_present","entrance_present","featured_videos_not_preloaded","entrance_opens","entrance_closes","video_launch","kit_script_present"].filter(key=>report[key]!==true);
+// Kit may reject automated cross-origin requests even while the website is healthy.
+// Do not mark the whole site down when its explicit external signup fallback is present.
+if (!report.email_input_present) {
+  console.warn("::warning::Kit email input was not rendered in headless Chrome. Visible direct-signup fallback: " + report.signup_fallback_present + ". An actual successful signup still needs a human test.");
+}
+const hardFailures=["hero_present","entrance_present","featured_videos_not_preloaded","entrance_opens","entrance_closes","video_launch","signup_path_visible"].filter(key=>report[key]!==true);
 if(hardFailures.length) {
   console.error("Critical browser checks failed:",hardFailures.join(", "));
   process.exitCode=1;
