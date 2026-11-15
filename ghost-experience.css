@@ -24,7 +24,7 @@
 
 /* The music video frame is only embedded after a visitor actively opens it. */
 #double-feature-premiere .premiere-video{background:#090909}
-#double-feature-premiere .jgw-feature-play{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:#060607;color:#fff;cursor:pointer;overflow:hidden;text-align:center}
+#double-feature-premiere .jgw-feature-play{position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;border:0;background:#060607;color:#fff;cursor:pointer;overflow:hidden;text-align:center}
 #double-feature-premiere .jgw-feature-play img{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(.62) saturate(.92);transition:filter .25s,transform .45s}
 #double-feature-premiere .jgw-feature-play:hover img,#double-feature-premiere .jgw-feature-play:focus-visible img{filter:brightness(.82) saturate(1.1);transform:scale(1.03)}
 #double-feature-premiere .jgw-feature-play:focus-visible{outline:3px solid #fff;outline-offset:-4px}
