@@ -15,7 +15,7 @@
     const sync = () => {
       const playing = !audio.paused && !audio.ended;
       player.classList.toggle('is-playing', playing);
-      if (status) status.textContent = playing ? 'NOW PLAYING · 52-SECOND PREVIEW' : '52-SECOND SONG PREVIEW';
+      if (status) status.textContent = playing ? 'NOW PLAYING · NEW MASTER' : 'NEW MASTER · 52-SECOND PREVIEW';
     };
     audio.addEventListener('play', () => {
       sync();
